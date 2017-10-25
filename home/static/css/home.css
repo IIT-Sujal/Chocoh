@@ -1,0 +1,92 @@
+.navbar .navbar-nav .navbar-right{
+    display: inline-block;
+    float: none;
+}
+.navbar .navbar-collapse {
+    text-align: center;
+    font-family: Lato;
+    font-weight: 700;
+    font-size: 14px;
+    position: relative;
+}
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.42857;
+    color: #fff;
+    background-color: #262626;
+}
+#slider{
+	height: 648px;
+	z-index: 4;
+}
+h1{
+    font-family: "Dancing Script", cursive;
+    font-weight: 300;
+    line-height: 3;
+    font-size: 35px;
+    color: inherit;
+}
+h4{
+    font-family: "Dancing Script", cursive;
+    font-size: 20px;   
+}
+.home-button-product{
+	text-align: center;
+	font-family: "Lato", cursive;
+}
+.parent-slider-image{
+	position: relative;
+	top:0;
+	left: 0;
+}
+.slide-image{
+	position: relative;
+	top:0;
+	left: 0;
+}
+#slider-logo{
+	position: absolute;
+	top:10%;
+	width: 100%;
+    font-family: "Dancing Script";
+    font-weight: 500;
+    line-height: 3em;
+    font-size: 110px;
+    color: inherit;
+}
+.card {
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
+    transition: 1s;
+}
+
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+    box-shadow: inset -5px -5px 5px 5px rgba(20,20,20,0.2);
+}
+
+/* Add some padding inside the card container */
+
+#product-heading{
+	text-align: center;
+	font-family: "Dancing Script";
+    font-weight: 500;
+    line-height: 2;
+    font-size: 90px;
+}
+.contact-us-form{
+    background-color: transparent;
+    border: none;
+    border-style: solid;
+    border-top: none; 
+    border-bottom: 10; 
+    border-color: white; 
+    border-right: none; 
+    border-left: none; 
+    border-width: 2px;
+}
+.navbar-header {
+    position: relative;
+    z-index:1;
+}
