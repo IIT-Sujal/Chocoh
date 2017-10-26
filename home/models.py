@@ -11,6 +11,26 @@ class User(models.Model):
 	wallet=models.IntegerField(default=0)
 	password=models.CharField(max_length=200,default="")
 	email_id=models.CharField(max_length=200,default="")
+	def __str__(self):
+		return self.name
+		
+def start_user_session(request, user_id):
+	request.session["user_mail_id"] = user_id
+	return request
+
+def check_if_auth_user(request):
+	if request.session.has_key("user_mail_id"):
+		return request.session["user_mail_id"]
+	else:
+		return None
+
+def stop_user_session(request):
+	if request.session.has_key("user_mail_id"):
+		user = User.objects.filter(user_id=request.session["user_mail_id"])[0]
+		del request.session["user_mail_id"]
+		return True
+	return False
+
 class Order(models.Model):
 	order_id=models.AutoField(primary_key=True)
 	total_amount=models.IntegerField()

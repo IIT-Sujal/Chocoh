@@ -51,7 +51,7 @@
 				<h4 class="modal-title text-center">Login</h4>
 			</div>
 			<div class="modal-body">
-		    	<form action="home/register" method="POST">{% csrf_token %}
+		    	<form action="/login/" method="POST">{% csrf_token %}
 					<div class="form-group">
 						<label for="email">Email address:</label>
 						<input type="email" class="form-control" id="email">
@@ -81,7 +81,7 @@
 				<h4 class="modal-title text-center">Signup</h4>
 			</div>
 			<div class="modal-body">
-		    	<form>
+		    	<form action="/register" method="POST">{% csrf_token %}
 						<div class="form-group">
 						<label for="usr">Name:</label>
 						<input type="text" class="form-control" id="usr">
@@ -130,11 +130,11 @@
 				        </div>
 			        </div>
 			        <div class="carousel-caption">
+
 			          <h1>"I have never met a chocolate I didn't like..."</h1>
 			      <div class="home-button-product"> <a href="#productpage" class="btn btn-lg  btn-warning">OUR PRODUCTS</a> </div>
-			        </div>
+			        </div>     
 					    </div>
-					      
 					    <div class="item">
 					    	<div class="parent-slider-image">
 						    	<div class="slide-image">
