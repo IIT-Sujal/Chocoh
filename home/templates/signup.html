@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<br>
+<br>
+<br>
+<div id="signup"  style="color: black;">
+	<div class="modal-dialog">
+	    <!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">	
+				<h4 class="modal-title text-center">Signup</h4>
+			</div>
+			<div class="modal-body">
+		    	<form action="/signup" method="POST">{% csrf_token %}
+						<div class="form-group">
+						<label for="usr">Name:</label>
+						<input type="text" class="form-control" id="usr" name="usr">
+						</div>
+						<div class="form-group">
+						<label for="email">Email address:</label>
+						<input type="email" class="form-control" id="email" name="email">
+						</div>
+						<div class="form-group">
+						<label for="contact">Contact No.:</label>
+						<input type="tel" class="form-control" id="contact" name="contact">
+						</div>
+						<div class="form-group">
+						<label for="pwd">Password:</label>
+						<input type="password" class="form-control" id="pwd" name="pwd">
+						</div>
+						<div class="text-center">
+						<button type="submit" class="btn btn-default">Submit</button>
+						</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
