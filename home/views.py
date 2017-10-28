@@ -75,7 +75,7 @@ def cart(request,pk):
 				cur.execute(query)
 			db.commit()
 			messages.success(request,"added to cart successfully")
-			return redirect("homepage")
+			return redirect('/home#productpage')
 		else:
 			query="Select * from user_cart,chocolate where user_id='%s' and user_cart.chocolate_id=chocolate.chocolate_id"%(request.session['user_id']) 
 			cur.execute(query)
@@ -86,3 +86,9 @@ def cart(request,pk):
 			return render(request, 'cart.html',{'cart':cart,'price':price})
 	else:
 		return redirect("login")
+def delete_from_cart(request,pk):
+	db,cur=db_init()
+	query="DELETE FROM user_cart where user_id='%s' and chocolate_id='%s'"%(request.session['user_id'],pk) 
+	cur.execute(query)
+	db.commit()
+	return redirect('/cart/0')
