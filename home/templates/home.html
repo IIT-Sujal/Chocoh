@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 {% block content %}
 
 	<!-- designing sldier of homepage -->
@@ -18,7 +19,7 @@
 			    <div class="item active">
 			    	<div class="parent-slider-image">
 				    	<div class="slide-image">
-				        	<img src="static/images/slide1.jpg" alt="Chocolates are getting baked!" id="slider" class="img-responsive" style="width: 100%;">
+				        	<img src="{% static 'images/slide1.jpg' %}" alt="Chocolates are getting baked!" id="slider" class="img-responsive" style="width: 100%;">
 				        </div>
 				        <div class="text-center" id="slider-logo">
 				        	<p>ChocOH!</p>
@@ -33,7 +34,7 @@
 					    <div class="item">
 					    	<div class="parent-slider-image">
 						    	<div class="slide-image">
-							        <img src="static/images/slide2.jpg" alt="Chocolates are getting baked!" id="slider" style="width:100%;">
+							        <img src="{% static 'images/slide2.jpg' %}" alt="Chocolates are getting baked!" id="slider" style="width:100%;">
 				        </div>
 				        <div class="text-center" id="slider-logo">
 				        	<p>ChocOH!</p>
@@ -60,7 +61,7 @@
 
 <div>
 <section id="specialpage">	
-		<div class="container-fluid img-responsive" style="background-image: url(static/images/timeline-1.jpg); background-repeat: no-repeat; background-size: 100%; ">
+		<div class="container-fluid img-responsive" style="background-image: url({% static 'images/timeline-1.jpg' %}); background-repeat: no-repeat; background-size: 100%; ">
 			<div class="row">
 				<div class="col-md-12" id="product-heading">
 					<p><u style="text-decoration: underline; text-decoration-color:orange; text-decoration-style:  ">Special!</u></p>
@@ -68,7 +69,7 @@
 			</div>
 		<div class="row">
 		<div class="col-md-6 ">
-			<img src="static/images/product.png" alt="Avatar" style="width:80%; padding-left: 80px;">
+			<img src="{% static 'images/product.png' %}" alt="Avatar" style="width:80%; padding-left: 80px;">
 		</div>
 		<div class="col-md-4 col-md-offset-1 text-center" >
 			<p> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
@@ -84,7 +85,7 @@
 </section>	
 </div>
 	
-<section id="productpage" style="background-image: url(static/images/contact_us_bg.jpg);">
+<section id="productpage" style="background-image: url({% static 'images/contact_us_bg.jpg' %});">
 	<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-12" id="product-heading">
@@ -97,16 +98,16 @@
     <div class="col-md-12">
       <div class="carousel slide multi-item-carousel" id="theCarousel">
         <div class="carousel-inner">
-        {% for i in product_quantity %}
-        	{% if i == 0 %}
+        {% for i in product_list %}
+        	{% if i.0 == 1 %}
           <div class="item active">
           	{% else %}
           	<div class="item">
           	{% endif %}
             <div class="card col-md-4 text-center" >
-							  <img src="static/images/product.png" alt="Avatar" style="width:80%;">
-							    <h4 style="font-size: 22px;"><b>Fruit and Nut <br> &#x20B9 300</b></h4> 
-							    <form action="/cart" method="POST">{% csrf_token %}
+							  <img src="{% static 'images/product.png' %}" alt="Avatar" style="width:80%;">
+							    <h4 style="font-size: 22px;"><b>{{ i.2 }} <br> &#x20B9 {{ i.1 	}}</b></h4> 
+							    <form action="/cart/{{ i.0 }}" method="POST">{% csrf_token %}
 							    <button type="submit" class="btn btn-default text-center">Add to Cart<span class="glyphicon glyphicon-shopping-cart"></span></button>
 							    </form>
 							    <br>
@@ -123,12 +124,12 @@
     </div>
   </div>
 </div>
-<script src="static/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="static/js/home.js"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/home.js' %}"></script>
 	<br>
 	<br>
 </section>
-<section id="Aboutuspage" style="background-image: url(static/images/news-2.jpg); background-repeat: no-repeat; background-size: 100%;">
+<section id="Aboutuspage" style="background-image: url({% static 'images/news-2.jpg' %}); background-repeat: no-repeat; background-size: 100%;">
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-12" id="product-heading">
@@ -150,7 +151,7 @@
 			<br>
 		</div>
 </section>	
-<section id="Reviewspage" style="background-image: url(static/images/news-1.jpg); background-repeat: no-repeat; background-size: 100%;">
+<section id="Reviewspage" style="background-image: url({% static 'images/news-1.jpg' %}); background-repeat: no-repeat; background-size: 100%;">
 	<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-12" id="product-heading">
@@ -172,7 +173,7 @@
 			<br>
 </section>	
 
-<section id="Contactuspage" style="background-image: url(static/images/contact_us_bg.jpg);">
+<section id="Contactuspage" style="background-image: url({% static 'images/contact_us_bg.jpg' %});">
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-12" id="product-heading">

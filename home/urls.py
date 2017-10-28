@@ -5,6 +5,6 @@ urlpatterns = [
 	url(r'^home', views.homepage,name='homepage'),
 	url(r'^signup$', views.signup,name='signup'),
 	url(r'^login$', views.login,name='login'),
-	url(r'^logout$', views.logout,name='logout'),
-	url(r'^cart$', views.cart,name='cart'),
+	url(r'^logout/$', views.logout,name='logout'),
+	url(r'^cart/(?P<pk>[0-9]+)$', views.cart,name='cart'),
 ]
