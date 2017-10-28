@@ -9,7 +9,7 @@ import MySQLdb
 db=MySQLdb.connect(host="localhost",user="root",passwd="trisha",db="chocoh")
 cur=db.cursor()
 def homepage(request):
-	ContextData={'range':range(6),'r2':range(0,10,2)}
+	ContextData={'product_quantity':range(0,6)}
 	return render(request, 'home.html',ContextData)
 
 def signup(request):
@@ -49,4 +49,4 @@ def logout(request):
 	return redirect ("homepage")
 def cart(request):
 
-	return redirect("homepage")
+	return render(request,'cart.html',{})
