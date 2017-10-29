@@ -54,21 +54,31 @@ def login(request):
 		return render(request, 'login.html',ContextData)
 def logout(request):
 	db,cur=db_init()
-	del request.session['user_id']
+	if request.session.has_key('user_id'):
+		del request.session['user_id']
 	return redirect ("homepage")
-def cart(request,pk):
+def cart(request,pk,quantity_update):
 	db,cur=db_init()
 	if request.session.has_key('user_id'):
 		if pk!='0':
+			print 'rajputana',request.session['user_id']
 			query="select * from user_cart where user_id='%s' and chocolate_id='%s'"%(request.session['user_id'],pk) 
 			cur.execute(query)
 			already_bought=cur.fetchall()
 			if already_bought:
-				quantity=already_bought[0][2]+1
+				if quantity_update=='0':
+					quantity=already_bought[0][2]+1
+				else:
+					quantity=request.POST.get('quantity')
+					query="DELETE FROM user_cart where user_id='%s' and chocolate_id='%s'"%(request.session['user_id'],pk) 
+					cur.execute(query)
+					query="INSERT INTO user_cart(user_id,chocolate_id,quantity) values('%s','%s','%s')"%(request.session['user_id'],pk,quantity)
+					cur.execute(query)
+					db.commit()
+					return redirect("cart", pk='0',quantity_update='0')
 				query="DELETE FROM user_cart where user_id='%s' and chocolate_id='%s'"%(request.session['user_id'],pk) 
 				cur.execute(query)
-				query="INSERT INTO user_cart(user_id,chocolate_id,quantity) values('%s','%s','%s')"%(request.session['user_id'],pk,quantity) 
-				print "hihihihhiihih",query
+				query="INSERT INTO user_cart(user_id,chocolate_id,quantity) values('%s','%s','%s')"%(request.session['user_id'],pk,quantity)
 				cur.execute(query)
 			else:
 				query="INSERT INTO user_cart(user_id,chocolate_id) values('%s','%s')"%(request.session['user_id'],pk) 
@@ -91,7 +101,7 @@ def delete_from_cart(request,pk):
 	query="DELETE FROM user_cart where user_id='%s' and chocolate_id='%s'"%(request.session['user_id'],pk) 
 	cur.execute(query)
 	db.commit()
-	return redirect('/cart/0')
+	return redirect('/cart/0/0')
 def chocolate_detail(request,pk):
 	db,cur=db_init()
 	query="SELECT * from chocolate where chocolate_id='%s'"%(pk)

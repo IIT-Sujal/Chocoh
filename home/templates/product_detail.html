@@ -19,21 +19,23 @@
                         <h2 class="title-attr" style="font-family: 'Dancing script'"><small>Remaining: {{ product.3 }}</small></h2>                    
                         <h4>Quantity</h4>
                         <div>
+                        <form action="/cart/{{ product.0 }}/1" method="POST">{% csrf_token %}
                             <div class="btn-minus"><span class="glyphicon glyphicon-minus"></span></div>
-                            <input value="1" style="color: black;" />
+                            <input value="1" name="quantity" style="color: black;" />
                             <div class="btn-plus"><span class="glyphicon glyphicon-plus"></span></div>
                         </div>
                     </div>                
                             <div class="section" style="padding-bottom:20px;">
                         <h2 class="title-attr" style="font-family: 'Dancing script'">Ratings: {{ product.6 }}</h2>
 
-                         </div>
+        </div>
 
                     <!-- Botones de compra -->
                     <div class="section" style="padding-bottom:20px;">
-                        <button class="btn btn-success"><span style="margin-right:20px" class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Add To Cart</button>
+                        <button class="btn btn-success" type="submit"><span style="margin-right:20px" class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Add To Cart</button>
                     </div>                                        
                 </div>      
+                </form>
                 <div class="col-xs-9">
 
                     <div style="width:100%;border-top:1px solid silver">
