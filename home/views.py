@@ -92,3 +92,5 @@ def delete_from_cart(request,pk):
 	cur.execute(query)
 	db.commit()
 	return redirect('/cart/0')
+def chocolate_detail(request,pk):
+	return render(request, 'product_detail.html',{})
