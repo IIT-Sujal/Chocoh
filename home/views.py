@@ -93,4 +93,8 @@ def delete_from_cart(request,pk):
 	db.commit()
 	return redirect('/cart/0')
 def chocolate_detail(request,pk):
-	return render(request, 'product_detail.html',{})
+	db,cur=db_init()
+	query="SELECT * from chocolate where chocolate_id='%s'"%(pk)
+	cur.execute(query)
+	l=cur.fetchall()
+	return render(request, 'product_detail.html',{'product':l[0]})
