@@ -1,0 +1,13 @@
+{% extends 'shoeshowroom/template.html' %}
+
+
+{% load staticfiles %}
+{% block content %}
+
+    {% for shoe in list_of_shoes %}
+    	{{shoe.myid}}
+
+    {% endfor %}
+
+	
+{% endblock %}

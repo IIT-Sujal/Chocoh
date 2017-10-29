@@ -1,0 +1,206 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+	<link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+	<link rel="stylesheet" href="{% static 'ItemSlider/css/main-style.css' %}">
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+		
+</head>
+<body>
+
+	<nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{% url 'home' %}"><strong>EKTA ENTERPRISES</strong> </a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{% url 'men_sec' %}">MEN</a></li>
+                    <li><a href="{% url 'women_sec' %}">WOMEN</a></li>
+                    <li><a href="{% url 'kids_sec' %}">KIDS</a></li>
+                    <li><a href="{% url 'filter' %}">FILTER</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'logout' %}">LOGOUT</a></li>
+                        <li><a href="{% url 'cart' user.username %}">CART</a></li>
+                    {% else %}
+                      <li><a href="{% url 'login' %}">LOGIN</a></li>
+                      <li><a href="{% url 'signup' %}">SIGNUP</a></li>
+                    {% endif %}
+                    <li><a href="{% url 'query' %}">QA</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">24x7 Support <b class="caret"></b></a>
+                        <ul class="dropdown-menu" style="padding-left: 50px; padding-right: 50px">
+                            <li>
+                            	<strong><u>Call</u></strong><br>
+                            	<p style="padding-left: 25px">07652-245253</p>
+                            </li>
+                            <li class="divider"></li>
+                            <li><strong><u>Mail</u></strong>
+                            	<p style="padding-left: 25px">vinayjaisinghani@gmail.com</p>
+                            </li>
+                            <li class="divider"></li>
+                            <li><strong><u>Address</u></strong>
+                                <p style="padding-left: 25px">
+                                    Ekta Enterprises<br>
+				                	Development road<br>
+				                	Near Karam Bhumi Hotel<br>
+				                	Shahdol(MP)<br>
+				                	Pin: 484001
+                                </p>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+    
+
+
+
+
+
+    
+
+
+    <main style="padding:1%">
+		{% block content %}{% endblock %}
+	</main>
+
+
+
+
+
+    <!-- /.container -->
+    <div class="col-md-12 download-app-box text-center">
+
+        Life Is Too Short To Wear Uncool Stuff<br><br>  <p class="btn btn-danger btn-lg">Try The Most Magnificent Products In The Market</p>
+
+    </div>
+
+    <!--Footer -->
+    <div class="col-md-12 footer-box">
+    	
+        <div class="row small-box ">
+            <strong><u>Shoes</u> : Woodland | Converse |  Vans | Jellypop | 
+            Adidas |  B.O.C | LifeStride | Asics |
+              Nike | Franco Sarto | Bare Traps |  LEVI's | 
+            Fila | Reebok |  Sparx | Puma |
+            Action |  Lotto | Campus </strong>
+         
+        </div>
+        <div class="row small-box ">
+            <strong><u>Socks</u> : Wrangler | Peter England | Lee | 
+            Clareo | ShopZee | Infinity | Nike |
+              Bof | Adidas | UCB | FootPrints | 
+            Sparkle | Levi's | Flora</strong>
+        </div>
+
+        <div class="row small-box ">
+            <strong><u>Sandals</u> : Action |  Arrow | Adidas | 
+            Sparx | Puma | Adda |PU |
+              Ajanta | Alivio | Ambro |  Bacca Bucci | 
+            Big FOx | Campus |  Clarks </strong>
+            
+        </div>
+        <div class="row small-box pad-botom ">
+            <strong><u>Slippers</u> : Bata | Adidas | Flite | 
+            UCB | Bacca Bucci | Adda |Sparx |
+              Clarks | Eva |Lancer |  Reebok | 
+            PU |Provogue | Windie | Barbie |
+            Disney </strong>
+            
+        </div>
+        <div class="row">
+            <div class="col-md-1">
+                
+            </div>
+            <div class="col-md-3">
+
+                <strong>Having Troubles?</strong>
+                <hr>
+                <p>
+                    Send Us A Quick<br>
+                    <a href="{% url 'tquery' %}"><font style="font-size: 17px; color: black">Query</font></a>
+                </p>
+                
+            </div>
+
+            <div class="col-md-4" style="padding-left: 60px">
+                <strong>Our Location</strong>
+                <hr>
+                <p>
+                	Ekta Enterprises<br>
+                	Development road<br>
+                	Near Karam Bhumi Hotel<br>
+                	Shahdol(MP)<br>
+                	Pin: 484001
+                </p>
+
+                2017 www.ektaenterprises.com | All Right Reserved
+            </div>
+            <div class="col-md-4 social-box">
+                <strong>We are Social </strong>
+                <hr>
+                <a href="#"><i class="fa fa-facebook-square fa-3x "></i></a>
+                <a href="#"><i class="fa fa-twitter-square fa-3x "></i></a>
+                <a href="#"><i class="fa fa-google-plus-square fa-3x c"></i></a>
+                <a href="#"><i class="fa fa-linkedin-square fa-3x "></i></a>
+                <a href="#"><i class="fa fa-pinterest-square fa-3x "></i></a>
+                <p>
+                    We try to produce the best of services.<br>
+                    Quality products shall well be provided.<br>
+                    <b>We are one of a kind.</b> 
+                </p>
+            </div>
+        </div>
+        <hr>
+    </div>
+    <!-- /.col -->
+    <div class="col-md-12 end-box ">
+        &copy; 2017 | &nbsp; All Rights Reserved | &nbsp; www.ektaenterprises.com | &nbsp; 24x7 support | &nbsp; Email us: vinayjaisinghani7777@gmail.com
+    </div>
+    <!-- /.col -->
+    <!--Footer end -->
+    <!--Core JavaScript file  -->
+    <script src="{% static "js/jquery-1.10.2.js" %}"></script>
+    <!--bootstrap JavaScript file  -->
+    <script src="{% static "js/bootstrap.js" %}"></script>
+    <!--Slider JavaScript file  -->
+    <script src="{% static "ItemSlider/js/modernizr.custom.63321.js" %}"></script>
+    <script src="{% static "ItemSlider/js/jquery.catslider.js" %}"></script>
+    <script>
+        $(function () {
+
+            $('#mi-slider').catslider();
+
+        });
+	</script>
+
+	
+
+</body>
+</html>

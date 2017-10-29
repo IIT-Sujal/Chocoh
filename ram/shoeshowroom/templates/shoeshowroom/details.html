@@ -1,0 +1,113 @@
+{% extends 'shoeshowroom/template.html' %}
+
+
+{% load staticfiles %}
+{% block content %}
+
+    <div class="row">
+
+
+        <div class="col-md-4 text-center col-sm-6 col-xs-6">
+            <div class="thumbnail product-box">
+                <div class="caption">
+
+                	<img src="{{ productx.img1.url }}"   /><br><br>
+
+                </div>
+            </div>
+
+            <div class="thumbnail product-box">
+                <div class="caption">
+
+                    <img src="{{ productx.img3.url }}"   /><br><br>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-4 text-center col-sm-6 col-xs-6">
+            <div class="thumbnail product-box">
+                <div class="caption">
+
+                	<img src="{{ productx.img2.url }}"   /><br><br>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 text-center col-sm-6 col-xs-6">
+            <div class="thumbnail product-box">
+                <div class="caption">
+
+                    <span style="float: left;"><font style="color: grey;font-size: 20px;">Specifications</font></span><br>
+                    <hr style="height:1px;border:none;color:grey;background-color:grey;"><br>
+
+                    <span style="float: left;"><font style="color: black;font-size: 15px;font-family:comic sans ms ">Company</font></span><span style="float: right;"><strong style="font-size: 15px;font-family: courier">{{ productx.company }}</strong></span><br><br>
+
+                    <span style="float: left;"><font style="color: black;font-size: 15px;font-family:comic sans ms">Model</font></span><span style="float: right;"><strong style="font-size: 15px;font-family: courier">{{ productx.modelname }}</strong></span><br><br>
+
+                    <span style="float: left;"><font style="color: black;font-size: 15px;font-family:comic sans ms">Type</font></span><span style="float: right;"><strong style="font-size: 15px;font-family: courier">{{ productx.floater }}</strong></span><br><br>
+
+                    <span style="float: left;"><font style="color: black;font-size: 15px;font-family:comic sans ms">Price</font></span><span style="float: right;"><strong style="font-size: 15px;font-family: platino">{{ productx.price }}</strong></span><br><br>
+
+                    <span style="float: left;"><font style="color: black;font-size: 15px;font-family:comic sans ms">Outer Material</font></span><span style="float: right;"><strong style="font-size: 15px;font-family:courier">{{ productx.outer_material }}</strong></span><br><br>
+
+                    <span style="float: left;"><font style="color: black;font-size: 15px;font-family:comic sans ms">Height</font></span><span style="float: right;"><strong style="font-size: 15px;font-family: courier">{{ productx.neck_height }}</strong></span><br><br>
+
+                    <span style="float: left;"><font style="color: black;font-size: 15px;font-family:comic sans ms">Occasion</font></span><span style="float: right;"><strong style="font-size: 15px;font-family:courier">{{ productx.occasion }}</strong></span><br><br>
+
+                    <span style="float: left;"><font style="color: black;font-size: 15px;font-family:comic sans ms">Weight</font></span><span style="float: right;"><strong style="font-size: 15px;font-family:platino">{{ productx.weight }}</strong></span><br><br>
+
+                    <span style="float: left;"><font style="color: black;font-size: 15px;font-family:comic sans ms">Pack Of</font></span><span style="float: right;"><strong style="font-size: 15px;font-family:platino">{{ productx.pack_of }}</strong></span><br><br>
+
+                    <hr style="height:1px;border:none;color:grey;background-color:grey;">
+
+                    <span style="float: right;"><font style="color: black;font-size: 18px;float: 
+                    right"><u>Sizes</b></font></span><br><br>
+
+                    <p class="btn btn-success" role="button" style="float: left;">Add To Cart</p>
+                    {% if user.is_authenticated %}
+                        {% if productx.size10 %}
+                            <p style="float: right;padding-right: 5px"><a href="{% url 'add_to_cart10' productx.myid user.username %}" class="btn btn-primary" role="button">10</a></p>
+                        {% endif %}
+                        {% if productx.size9 %}
+                            <p style="float: right;padding-right: 5px;"><a href="{% url 'add_to_cart9' productx.myid user.username %}" class="btn btn-primary" role="button">9</a></p>
+                        {% endif %}
+                        {% if productx.size8 %}
+                            <p style="float: right;padding-right: 5px;"><a href="{% url 'add_to_cart8' productx.myid user.username %}" class="btn btn-primary" role="button">8</a></p>
+                        {% endif %}
+                        {% if productx.size7 %}
+                            <p style="float: right;padding-right: 5px;"><a href="{% url 'add_to_cart7' productx.myid user.username %}" class="btn btn-primary" role="button">7</a></p>
+                        {% endif %}
+                        {% if productx.size6 %}
+                            <p style="float: right;padding-right: 5px;"><a href="{% url 'add_to_cart6' productx.myid user.username %}" class="btn btn-primary" role="button">6</a></p>
+                        {% endif %}
+                    {% else %}
+                        {% if productx.size10 %}
+                            <p style="float: right;padding-right: 5px"><a href="{% url 'login' %}" class="btn btn-primary" role="button">10</a></p>
+                        {% endif %}
+                        {% if productx.size9 %}
+                            <p style="float: right;padding-right: 5px;"><a href="{% url 'login' %}" class="btn btn-primary" role="button">9</a></p>
+                        {% endif %}
+                        {% if productx.size8 %}
+                            <p style="float: right;padding-right: 5px;"><a href="{% url 'login' %}" class="btn btn-primary" role="button">8</a></p>
+                        {% endif %}
+                        {% if productx.size7 %}
+                            <p style="float: right;padding-right: 5px;"><a href="{% url 'login' %}" class="btn btn-primary" role="button">7</a></p>
+                        {% endif %}
+                        {% if productx.size6 %}
+                            <p style="float: right;padding-right: 5px;"><a href="{% url 'login' %}" class="btn btn-primary" role="button">6</a></p>
+                        {% endif %}
+                    {% endif %}
+
+                    <br><br><br>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+	
+{% endblock %}
