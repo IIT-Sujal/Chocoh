@@ -1,0 +1,29 @@
+{% extends 'ceobase.html' %}
+{% load staticfiles %}
+{% block content %}
+<br>
+<br>
+<br>
+<div class="card-group">
+{% for i in orders %}
+	<div class="card">
+	<div class="card-block">
+	<img class="card-img-top img-responsive" src="{% static 'images/product.png' %}" style="width: 10%;float: left;"alt="Card image cap">
+	<br>
+	  <h4 class="card-title">{{ i.1 }}</h4>
+	  <p class="card-text">Contact Number :- {{ i.4 }} Email_id:- {{ i.3 }}</p>
+	  <p class="card-text"><small class="text-muted">User_wallet:- {{ i.5 }}</small></p>
+	  <a href="/delete_from_cart/{{ i.3 }}" class="btn btn-danger">Delete</a>
+	</div>
+	<br>
+	</div>
+{% endfor %}
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+{% endblock %}

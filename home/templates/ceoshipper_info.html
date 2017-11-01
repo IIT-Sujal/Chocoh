@@ -1,0 +1,34 @@
+{% extends 'ceobase.html' %}
+{% load staticfiles %}
+{% block content %}
+<br>
+<br>
+<br>
+<div class="card-group">
+{% for i in user %}
+	<div class="card">
+	<div class="card-block">
+	<img class="card-img-top img-responsive" src="{% static 'images/product.png' %}" style="width: 10%;float: left;"alt="Card image cap">
+	<br>
+	  <h4 class="card-title">{{ i.1 }}</h4>
+	  <p class="card-text">Price (individual) - &#x20B9 {{ i.4 }}</p>
+	  <p class="card-text"><small class="text-muted">Quantity:- {{ i.2 }}</small></p>
+	  <a href="/product_detail/{{ i.3 }}" class="btn btn-primary">Change Quantity</a>
+	  <a href="/delete_from_cart/{{ i.3 }}" class="btn btn-danger">Delete</a>
+	</div>
+	<br>
+	</div>
+{% endfor %}
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<div class="text-center col-md-12" id="fixedbutton">
+<a href="#" class="btn btn-success" style="line-height: 0; padding-left: 60px; padding-right: 60px;font-family: 'Dancing Script';"><h2>Pay &#x20B9 {{ price }}</h2></a>
+</div>
+<br>
+{% endblock %}

@@ -3,12 +3,24 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render,redirect
 from django.contrib import messages
-import MySQLdb
+import MySQLdb,payu_biz,uuid
+from payu_biz.views import make_transaction
 
 # Create your views here.
 def db_init():
 	db=MySQLdb.connect(host="localhost",user="root",passwd="trisha",db="chocoh")
 	return db,db.cursor()
+
+def get_txnid():
+	db,cur=db_init()
+	txnid="ctxn"+str(uuid.uuid4())
+	query="select * from payment where payment_id='%s'"%(txnid)
+	cur.execute(query)
+	l=cur.fetchall()
+	if l :
+		return get_txnid()
+	else :
+		return txnid
 
 def homepage(request):
 	db,cur=db_init()
@@ -32,8 +44,28 @@ def signup(request):
 	 	return redirect("login")
 	else:
 		return render(request, 'signup.html',{})
+def contact(request):
+	db,cur=db_init()
+	name=request.POST.get('name')
+	email=request.POST.get('email')
+	contact_no=request.POST.get('contact')
+	user_message=request.POST.get('message')
+	print name,email,contact_no,user_message
+	if name and email and contact_no :
+		query="insert into messages(name,email_id,contact_no,messages) values('%s','%s','%s','%s')"%(name,email,contact_no,user_message)
+		cur.execute(query)
+		db.commit()
+		messages.success(request,"Your Message has reached us. We will reach you out shortly.")
+		return redirect("homepage")
+	else:
+		messages.success(request,"Please fill the form properly to get in touch with us.")
+		return redirect("homepage")
+
 
 def login(request):
+	if request.session.has_key('user_id'):
+		messages.success(request, "Already Logged in!")
+		return redirect("homepage")
 	db,cur=db_init()
 	ContextData={}
 	ContextData['x']=0
@@ -49,7 +81,7 @@ def login(request):
 			return redirect("homepage")
 		else:
 			messages.error(request,"Invalid Email-Id or Password!")
-			return render(request, 'login.html',ContextData)	
+			return render(request,'login.html',ContextData)	
 	else:
 		return render(request, 'login.html',ContextData)
 def logout(request):
@@ -108,3 +140,41 @@ def chocolate_detail(request,pk):
 	cur.execute(query)
 	l=cur.fetchall()
 	return render(request, 'product_detail.html',{'product':l[0]})
+def payment(request):
+	db,cur=db_init()
+def delivery(request):
+	price=request.POST.get('price')
+	name=request.POST.get('name')
+	email=request.POST.get('email')
+	contact_no=request.POST.get('contact_no')
+	ad1=request.POST.get('address_line_1')
+	ad2=request.POST.get('address_line_2')
+	pincode=request.POST.get('pincode')
+	print 'hi',price,name,email,contact_no,ad1,ad2,pincode
+	if price and name and email and contact_no and ad1 and pincode:
+		ContextData={}
+		ContextData['txnid']=get_txnid()
+		ContextData['amount']=price
+		ContextData['productinfo']='chocolate'
+		ContextData['firstname']=name
+		ContextData['phone']=contact_no
+		ContextData['email']=email
+		return make_transaction(ContextData)
+	elif price :
+		amount=request.POST.get('amount')
+		return render(request,'delivery.html',{'price':price})
+	else:
+		messages.success(request, "Please fill the details completely.")
+		return render(request,'delivery.html')
+def success(request):
+	db,cur=db_init()
+	query="Select * from user_cart where user_id='%s'"%(request.session.get('user_id'))
+	cur.execute(query)
+	order_list=cur.fetchall()
+	query="Delete from user_cart where user_id='%s'"%(request.session.get('user_id'))
+	cur.execute(query)
+	messages.success(request, "Your Payment is successful and your order has been placed.")
+	return redirect("homepage")
+def failure(request):
+	messages.success(request, "Your Payment has been failed. In case your amount has been deducted sit back and relax. It will refunded to your account in 7-10 working days.")
+	return redirect("homepage")

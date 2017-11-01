@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block content %}
-	
+	<link href="https://fonts.googleapis.com/css?family=Courgette" rel="stylesheet"> 
 	<!-- designing sldier of homepage -->
 <section >
 <div id="startpage"  >
@@ -69,14 +69,18 @@
 			</div>
 		<div class="row">
 		<div class="col-md-6 ">
-			<img src="{% static 'images/product.png' %}" alt="Avatar" style="width:80%; padding-left: 80px;">
+			<img src="{% static 'images/special.png' %}" alt="Avatar" style="width:120%; padding-left: 80px;">
 		</div>
-		<div class="col-md-4 col-md-offset-1 text-center" >
-			<p> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
-			Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		<div class="col-md-4 col-md-offset-1 text-center" style="font-family: 'Courgette', cursive; font-size: 18px;">
+			<p> It is a popular choice for marketing gifts. It can be given as a corporate gift for employees or a business gift for clients. They can also be considered if you are exploring corporate giveaway ideas. 
 			</p>
+			<p>	
+			You can choose to enclose a message for the recipient in each gift box. This can be a holiday greeting if the boxes are corporate christmas gifts or any other message as is appropriate for the occasion.If you put it all together, they surely become the best corporate gifts for any occasion or event.
+			</p>
+			So what are you thinking? Get in touch with us and make your special one happy. :)
 			<br>
-			<button type="button" class="btn btn-default text-center">Add to Cart<span class="glyphicon glyphicon-shopping-cart"></span></button>
+			<br>
+			<a href="/home#Contactuspage"><button type="button" class="btn btn-default text-center">Contact Us</button></a>
 		</div>
 		</div>
 		<br>
@@ -189,33 +193,33 @@
 		<a href="https://twitter.com/Twitter"><i class="fa fa-twitter" style="font-size:48px;color:white;padding-right: 10px;"></i></a>
 		<a href="https://plus.google.com/discover"><i class="fa fa-google-plus-official" style="font-size:48px;color:white;padding-right: 10px;"></i></a>
 	</div>
-    <form class="col-md-8 text-center">
+    <form class="col-md-8 text-center" method="POST" action="/contact_us_message">{% csrf_token %}
       	<div class="row">
           <label class="col-md-2" for="name"> Name : </label>
-          <input class="col-md-6 contact-us-form" id="name" type="text" size="50" >
+          <input class="col-md-6 contact-us-form" id="name" name="name" type="text" size="50" >
         </div>
         <br>
       	<div class="row">
           <label class="col-md-2" for="name"> E-mail : </label>
-          <input class="col-md-6 contact-us-form" id="name" type="text" size="50" >
+          <input class="col-md-6 contact-us-form" id="name" type="text"  name="email" size="50" >
         </div>
         <br>
       	<div class="row">
           <label class="col-md-2" for="name"> Contact No. : </label>
-          <input class="col-md-6 contact-us-form" id="name" type="text" size="50" >
+          <input class="col-md-6 contact-us-form" id="contact" name="contact" type="text" size="50" >
         </div>
         <br>
       	<div class="row">
           <label class="col-md-2" for="name"> Message : </label>
           <div class="col-md-6">
-			<textarea rows="5" cols="50" class="contact-us-form">
+			<textarea rows="5" cols="50" name="message" class="contact-us-form">
 			</textarea>	
           </div>
         </div>
         <br>
         <br>
         <div class="col-md-8">
-        	<button type="button" class="btn btn-success">Send Message</button>
+        	<button type="submit" class="btn btn-success">Send Message</button>
         </div>
         <br>
         <br>

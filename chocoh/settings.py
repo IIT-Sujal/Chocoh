@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'home',
     'ceo',
+    'payu_biz',
 ]
 
 MIDDLEWARE = [
@@ -114,3 +115,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
             
+
+SUCCESS_URL = "sujal24.pythonanywhere.com/success/" 
+FAILURE_URL = "sujal24.pythonanywhere.com/failure/" 
+CANCEL_URL = "sujal24.pythonanywhere.com/cancel/" 
+    

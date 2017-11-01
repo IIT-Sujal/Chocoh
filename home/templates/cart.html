@@ -40,10 +40,12 @@
 <br>
 <br>
 <br>
-
+<form action="/delivery_details" method="POST">{% csrf_token %}
 <div class="text-center col-md-12" id="fixedbutton">
-<a href="#" class="btn btn-success" style="line-height: 0; padding-left: 60px; padding-right: 60px;font-family: 'Dancing Script';"><h2>Pay &#x20B9 {{ price }}</h2></a>
+<input type="hidden" name="price" value="{{ price }}">
+<button type="submit" class="btn btn-success" style="line-height: 0; padding-left: 60px; padding-right: 60px;font-family: 'Dancing Script';"><h2>Buy &#x20B9 {{ price }}</h2></button>
 </div>
+</form>
 <br>
 {% endif %}
 {% endblock %}
