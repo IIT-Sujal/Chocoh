@@ -1,5 +1,5 @@
-create database chocoh;
-use chocoh;
+create database sujal24$chocoh;
+use sujal24$chocoh;
 create table user(user_id int primary key not null auto_increment,name char(50) not null,password char(50) not null,email_id char(50),contact_no char(10),user_wallet int default '0');
 create table orders(order_id int primary key not null auto_increment,total_amount int,delivery_address char(100),mobile_no char(10),delivery_date date,order_date date,delivery_status char(20) default 'not started',return_status char(10) default 'false',order_status char(10) default 'not paid');
 create table chocolate(chocolate_id int primary key not null auto_increment,price int,name char(50) not null,quantities_available int,quantities_sold int,description char(200) default 'Wonderful Product',ratings int);

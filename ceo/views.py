@@ -8,13 +8,13 @@ from home.views import db_init
 # Create your views here.
 def delete_user(request,pk):
 	db,cur=db_init()
-	query="delete from user where user_id='%s'"%(pk);
+	query="delete from user where user_id='%s'"%(pk)
 	cur.execute(query)
 	db.commit()
 	return redirect("ceouser")
 def homepage(request):
 	db,cur=db_init()
-	query="select * from chocolate";
+	query="select * from chocolate"
 	cur.execute(query)
 	product_list=cur.fetchall()
 	ContextData={'product_quantity':range(0,len(product_list)),'product_list':product_list}
@@ -23,7 +23,7 @@ def homepage(request):
 def ceoorderpast(request):
 	db,cur=db_init()
 	if request.session.has_key('ceo_id'):
-		query="select * from orders where order_status='completed'";
+		query="select * from orders where order_status='completed'"
 		cur.execute(query)
 		ContextData={}
 		ContextData['orders']=cur.fetchall()
@@ -35,7 +35,7 @@ def ceoorderpast(request):
 def ceoorder(request):	
 	db,cur=db_init()
 	if request.session.has_key('ceo_id'):
-		query="select * from orders where order_status='pending'";
+		query="select * from orders where order_status='pending'"
 		cur.execute(query)
 		ContextData={}
 		ContextData['orders']=cur.fetchall()
@@ -71,7 +71,7 @@ def logout(request):
 def ceouser(request):
 	db,cur=db_init()
 	if request.session.has_key('ceo_id'):
-		query="select * from user";
+		query="select * from user"
 		cur.execute(query)
 		ContextData={}
 		ContextData['user']=cur.fetchall()
@@ -81,7 +81,7 @@ def ceouser(request):
 def ceofeedback(request):
 	db,cur=db_init()
 	if request.session.has_key('ceo_id'):
-		query="select * from feedback";
+		query="select * from feedback"
 		cur.execute(query)
 		ContextData={}
 		ContextData['feedback']=cur.fetchall()
@@ -91,7 +91,7 @@ def ceofeedback(request):
 def shipper_info(request):
 	db,cur=db_init()
 	if request.session.has_key('ceo_id'):
-		query="select * from shipper_info";
+		query="select * from shipper_info"
 		cur.execute(query)
 		ContextData={}
 		ContextData['shipper_info']=cur.fetchall()
@@ -101,7 +101,7 @@ def shipper_info(request):
 def ceoproducts(request):
 	db,cur=db_init()
 	if request.session.has_key('ceo_id'):
-		query="select * from chocolate";
+		query="select * from chocolate"
 		cur.execute(query)
 		ContextData={}
 		ContextData['chocolate']=cur.fetchall()

@@ -8,7 +8,7 @@ from payu_biz.views import make_transaction
 
 # Create your views here.
 def db_init():
-	db=MySQLdb.connect(host="localhost",user="root",passwd="trisha",db="chocoh")
+	db=MySQLdb.connect(host="sujal24.mysql.pythonanywhere-services.com",user="sujal24",passwd="Goldman@123",db="sujal24$chocoh")
 	return db,db.cursor()
 
 def get_txnid():
