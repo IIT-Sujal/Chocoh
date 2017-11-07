@@ -1,3 +1,4 @@
+drop database if exists sujal24;
 create database sujal24$chocoh;
 use sujal24$chocoh;
 create table user(user_id int primary key not null auto_increment,name char(50) not null,password char(50) not null,email_id char(50),contact_no char(10),user_wallet int default '0');

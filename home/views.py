@@ -3,12 +3,11 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render,redirect
 from django.contrib import messages
-import MySQLdb,payu_biz,uuid
-from payu_biz.views import make_transaction
+import MySQLdb,uuid
 
 # Create your views here.
 def db_init():
-	db=MySQLdb.connect(host="sujal24.mysql.pythonanywhere-services.com",user="sujal24",passwd="Goldman@123",db="sujal24$chocoh")
+	db=MySQLdb.connect(host="localhost",user="sujal24",passwd="abc123abc",db="sujal24$chocoh")
 	return db,db.cursor()
 
 def get_txnid():
@@ -178,3 +177,5 @@ def success(request):
 def failure(request):
 	messages.success(request, "Your Payment has been failed. In case your amount has been deducted sit back and relax. It will refunded to your account in 7-10 working days.")
 	return redirect("homepage")
+def payment(request):
+	return render(request, 'payment.html')
