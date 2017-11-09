@@ -56,6 +56,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'home.context_processors.is_user_authenticate',
                 'ceo.context_processors.is_ceo_authenticate',
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -113,6 +114,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
             
 
 SUCCESS_URL = "sujal24.pythonanywhere.com/success/" 

@@ -5,6 +5,8 @@ from django.shortcuts import render,redirect
 from django.contrib import messages
 import MySQLdb
 from home.views import db_init
+from django.core.files.storage import FileSystemStorage
+from base64 import b64encode
 # Create your views here.
 def delete_user(request,pk):
 	db,cur=db_init()
@@ -46,23 +48,26 @@ def ceoorder(request):
 
 def login(request):
 	db,cur=db_init()
-	ContextData={}
-	ContextData['x']=0
-	email_id=request.POST.get('email_id')
-	password=request.POST.get('password')
-	if email_id and password:
-		query="select ceo_id from ceo where email_id='%s' and password='%s'"%(email_id,password)
-		cur.execute(query)
-		l=cur.fetchall()
-		if l:
-			request.session['ceo_id']=l[0][0]
-			messages.success(request,"Successful Login")
-			return redirect("ceohome")
-		else:
-			messages.error(request,"Invalid Email-Id or Password!")
-			return render(request, 'ceologin.html',ContextData)	
+	if request.session.has_key('ceo_id'):
+		return redirect("ceohome")
 	else:
-		return render(request, 'ceologin.html',ContextData)
+		ContextData={}
+		ContextData['x']=0
+		email_id=request.POST.get('email_id')
+		password=request.POST.get('password')
+		if email_id and password:
+			query="select ceo_id from ceo where email_id='%s' and password='%s'"%(email_id,password)
+			cur.execute(query)
+			l=cur.fetchall()
+			if l:
+				request.session['ceo_id']=l[0][0]
+				messages.success(request,"Successful Login")
+				return redirect("ceohome")
+			else:
+				messages.error(request,"Invalid Email-Id or Password!")
+				return render(request, 'ceologin.html',ContextData)	
+		else:
+			return render(request, 'ceologin.html',ContextData)
 def logout(request):
 	db,cur=db_init()
 	if request.session.has_key('ceo_id'):
@@ -105,6 +110,50 @@ def ceoproducts(request):
 		cur.execute(query)
 		ContextData={}
 		ContextData['chocolate']=cur.fetchall()
-		return render(request, 'ceoshipper_info.html',ContextData)
+		return render(request, 'ceoproducts.html',ContextData)
+	else:
+		return redirect("ceologin")
+def delete_from_product(request,pk):
+	db,cur=db_init()
+	if request.session.has_key('ceo_id'):
+		try:
+			query="Delete from chocolate where chocolate_id='%s'"%(pk)
+			cur.execute(query)
+			db.commit()
+		except:
+			messages.success(request,"You cannot delete this product. It has been ordered by some user.")
+		return redirect("ceoproducts")
+	else:
+		return redirect("ceologin")
+
+def read_file(filename):
+    with open(filename, 'rb') as f:
+        photo = f.read()
+    return photo 
+
+def add_to_products(request):
+	db,cur=db_init()
+	if request.session.has_key('ceo_id'):
+		price=request.POST.get("price")
+		name=request.POST.get("name")
+		quantity_available=request.POST.get("quantity_available")
+		description=request.POST.get("description")
+		ratings=request.POST.get("ratings")
+		
+		if price and name and quantity_available and description and ratings:
+			image = request.FILES["product_image"]	
+			fs = FileSystemStorage()
+			filename = fs.save(image.name, image)
+			uploaded_file_url = fs.url(filename)	
+			uploaded_file_url="/home/sujal/DBMS-Project"+uploaded_file_url
+			image=read_file(uploaded_file_url)
+			image=b64encode(image)
+			query="insert into chocolate(name,price,quantities_available,quantities_sold,ratings,image) values(%s,%s,%s,%s,%s,%s)"
+			args=(name,price,quantity_available,0,ratings,image)
+			cur.execute(query,args)
+			db.commit()
+			return redirect("ceoproducts")
+		else:
+			return render(request, 'addproducts.html')
 	else:
 		return redirect("ceologin")

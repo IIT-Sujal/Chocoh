@@ -7,7 +7,7 @@ import MySQLdb,uuid
 
 # Create your views here.
 def db_init():
-	db=MySQLdb.connect(host="sujal24.mysql.pythonanywhere-services.com",user="sujal24",passwd="abc123abc",db="sujal24$chocoh")
+	db=MySQLdb.connect(host="localhost",user="sujal24",passwd="abc123abc",db="sujal24$chocoh")
 	return db,db.cursor()
 
 def get_txnid():

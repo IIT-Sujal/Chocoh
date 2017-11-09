@@ -1,0 +1,56 @@
+{% extends 'ceobase.html' %}
+{% load staticfiles %}
+{% block content %}
+<br>
+<br>
+<br>
+<div id="login"  style="color: black;">
+	<div class="modal-dialog">
+	    <!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title text-center">Add Products</h4>
+			</div>
+			<div class="modal-body">
+		    	<form action="/ceo/add_to_products" method="POST" enctype="multipart/form-data">{% csrf_token %}
+					<div class="form-group">
+						<label for="name">Product Name:</label>
+						<input type="text" class="form-control" id="name" name="name" required>
+						</div>
+						<div class="form-group">
+						<label for="price">Price:</label>
+						<input type="text" class="form-control" id="price" name="price" required>
+						</div>
+						<div class="form-group">
+						<label for="quantity_available">Price:</label>
+						<input type="text" class="form-control" id="quantity_available" name="quantity_available" required>
+						</div>
+						<div class="form-group">
+						<label for="quantity_available">Description:</label>
+						<input type="text" class="form-control" id="description" name="description" required>
+						</div>
+						<div class="form-group">
+						<label for="quantity_available">Ratings:</label>
+						<input type="text" class="form-control" id="ratings" name="ratings" required>
+						</div>
+						<div class="form-group">
+						<label for="product_image">Image:</label>
+						<input id="product_image" type="file" class="" name="product_image" required>
+						</div>
+						  
+						<div class="text-center">
+						<button type="submit" class="btn btn-default">Submit</button>
+						</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+{% endblock %}
