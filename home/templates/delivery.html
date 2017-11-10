@@ -15,41 +15,52 @@
 <br>
 <h1> Delivery Details</h1>	
 	<div class="container">
-				<form method="POST" action="">{% csrf_token %}
-					<div class="col-md-6 form-line">
+				<form method="POST" action="{{action}}">{% csrf_token %}
+					    <input type="hidden" name="key" value="{{ key }}" />            
+					    <input type="hidden" name="hash" value="{{ hash }}"/>            
+					    <input type="hidden" name="hash_string" value="{{ hash_string }}"/>
+					    <input type="hidden" name="txnid" value="{{ txnid }}" />
+					    <input type="hidden" name="amount" value="{{ amount }}" />
+					    <input type="hidden" name="email" value="{{ email }}" />
+    					<input type="hidden" name="firstname" value="{{ firstname }}" />
+ 					    <input type="hidden" name="phone" value="{{ phone }}" />
+					    <input type="hidden" name="productinfo" value="{{ productinfo }}"/>
+					    <input type="hidden" name="surl" value="{{ surl }}"/>
+					    <input type="hidden" name="furl" value="{{ furl }}" />
+					    <input type="hidden" name="service_provider" value="{{ service_provider }}" />
+					<!-- <div class="col-md-6 form-line">
 			  			<div class="form-group">
-			  				<label for="name">Your name</label>
-					    	<input type="text" class="form-control" name="name" id="" placeholder=" Enter Name" required>
+			  				<label for="firstname">Your name</label>
+					    	<input type="text" class="form-control" name="firstname" id="firstname" placeholder=" Enter Name" required>
 				  		</div>
 				  		<div class="form-group">
 					    	<label for="email">Email Address</label>
-					    	<input type="email" class="form-control" name="email" id="exampleInputEmail" placeholder=" Enter Email id" required>
+					    	<input type="email" class="form-control" name="email" id="email" placeholder=" Enter Email id" required>
 					  	</div>	
 					  	<div class="form-group">
-					    	<label for="contact_no">Mobile No.</label>
-					    	<input type="tel" class="form-control" name="contact_no" id="telephone" placeholder=" Enter 10-digit mobile no." required>
+					    	<label for="phone">Mobile No.</label>
+					    	<input type="tel" class="form-control" name="phone" id="phone" placeholder=" Enter 10-digit mobile no." required>
 			  			</div>
 			  		</div>
-			  		<div class="col-md-6">
+			  		 --><div class="col-md-6">
 			  			<div class="form-group">
 			  				<label for="address_line_1">Address line 1</label>
-					    	<input type="text" class="form-control" name="address_line_1"  placeholder=" Address line 1" required> 
+					    	<input type="text" class="form-control" name="udf1"  placeholder=" Address line 1" required> 
 				  		</div>
 				  		<div class="form-group">
 			  				<label for="address_line_2">Address line 2</label>
-					    	<input type="text" class="form-control" name="address_line_2"  placeholder=" Address line 2">
+					    	<input type="text" class="form-control" name="udf2"  placeholder=" Address line 2">
 				  		</div>
 
 				  		<div class="form-group">
 			  				<label for="pincode">Pincode</label>
-					    	<input type="text" class="form-control" name="pincode" id="" placeholder=" Pincode" required>
+					    	<input type="text" class="form-control" name="udf3" id="" placeholder=" Pincode" required>
 				  		</div>
 			  			
 					</div>
 
 					<div class="col-md-12 text-center">
-					<input type="hidden" name="price" value="{{ price }}" >
-						<button type="submit" class="btn btn-success" style="line-height: 0; padding-left: 60px;	 padding-right: 60px;font-family: 'Dancing Script';"><h2>Buy &#x20B9 {{ price }}</h2></button>
+						<button type="submit" class="btn btn-success" style="line-height: 0; padding-left: 60px;	 padding-right: 60px;font-family: 'Dancing Script';"><h2>Buy &#x20B9 {{ amount }} </h2></button>
 					</div>
 			  			
 				</form>

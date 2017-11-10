@@ -1,25 +1,20 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
-from django.shortcuts import render,redirect
+import hashlib
+from django.shortcuts import render,redirect,reverse
 from django.contrib import messages
-import MySQLdb,uuid
-
+import MySQLdb,uuid,hashlib
+import home.constants as constants,home.config as config
+from random import randint
 # Create your views here.
 def db_init():
-	db=MySQLdb.connect(host="localhost",user="sujal24",passwd="abc123abc",db="sujal24$chocoh")
+	db=MySQLdb.connect(host="sujal24.mysql.pythonanywhere-services.com",user="sujal24",passwd="abc123abc",db="sujal24$chocoh")
 	return db,db.cursor()
 
 def get_txnid():
-	db,cur=db_init()
-	txnid="ctxn"+str(uuid.uuid4())
-	query="select * from payment where payment_id='%s'"%(txnid)
-	cur.execute(query)
-	l=cur.fetchall()
-	if l :
-		return get_txnid()
-	else :
-		return txnid
+	hash_object = hashlib.sha256(b'randint(0,20)')
+	txnid=hash_object.hexdigest()[0:20]
+	return txnid
 
 def homepage(request):
 	db,cur=db_init()
@@ -28,6 +23,25 @@ def homepage(request):
 	product_list=cur.fetchall()
 	ContextData={'product_quantity':range(0,len(product_list)),'product_list':product_list}
 	return render(request, 'home.html',ContextData)
+def generate_hash(request, txnid):
+    try:
+        # get keys and SALT from dashboard once account is created.
+        # hashSequence = "key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5|udf6|udf7|udf8|udf9|udf10"
+        hash_string = get_hash_string(request,txnid)
+        generated_hash = hashlib.sha512(hash_string).hexdigest().lower()
+        return generated_hash
+    except Exception as e:
+        # log the error here.
+        logging.getLogger("error_logger").error(traceback.format_exc())
+        return None
+ 
+# create hash string using all the fields
+def get_hash_string(request, txnid):
+    hash_string = config.KEY+"|"+txnid+"|"+"603"+"|"+"chocolate"+"|"
+    hash_string += "sujal"+"|"+"sujmaheshwari24@gmail.com"+"|"
+    hash_string += "||||||||||"+config.SALT
+    print "woo", hash_string,"woo"
+    return hash_string
 
 def signup(request):
 	db,cur=db_init()
@@ -37,7 +51,7 @@ def signup(request):
 	password=request.POST.get('pwd')
 	if name and email_id and contact_no and password:
 	 	messages.success(request, "Successful Signup!")
-	 	query="INSERT INTO user(name,password,email_id,contact_no) values('%s','%s','%s','%s');"%(name,password,email_id,contact_no)
+	 	query="INSERT INTO user(name,password,email_id,contact_no) values('%s','%s','%s','%s');"%(name,hashlib.md5(password.encode('utf8')).hexdigest(),email_id,contact_no)
 		cur.execute(query)
 		db.commit(); 	
 	 	return redirect("login")
@@ -71,7 +85,7 @@ def login(request):
 	email_id=request.POST.get('email_id')
 	password=request.POST.get('password')
 	if email_id and password:
-		query="select user_id from user where email_id='%s' and password='%s'"%(email_id,password)
+		query="select user_id from user where email_id='%s' and password='%s'"%(email_id,hashlib.md5(password.encode('utf8')).hexdigest())
 		cur.execute(query)
 		l=cur.fetchall()
 		if l:
@@ -142,29 +156,24 @@ def chocolate_detail(request,pk):
 def payment(request):
 	db,cur=db_init()
 def delivery(request):
-	price=request.POST.get('price')
-	name=request.POST.get('name')
-	email=request.POST.get('email')
-	contact_no=request.POST.get('contact_no')
-	ad1=request.POST.get('address_line_1')
-	ad2=request.POST.get('address_line_2')
-	pincode=request.POST.get('pincode')
-	print 'hi',price,name,email,contact_no,ad1,ad2,pincode
-	if price and name and email and contact_no and ad1 and pincode:
-		ContextData={}
-		ContextData['txnid']=get_txnid()
-		ContextData['amount']=price
-		ContextData['productinfo']='chocolate'
-		ContextData['firstname']=name
-		ContextData['phone']=contact_no
-		ContextData['email']=email
-		return make_transaction(ContextData)
-	elif price :
-		amount=request.POST.get('amount')
-		return render(request,'delivery.html',{'price':price})
-	else:
-		messages.success(request, "Please fill the details completely.")
-		return render(request,'delivery.html')
+	data={}
+	data["action"] = constants.PAYMENT_URL_LIVE 
+	data["amount"] = float(str(request.POST.get('price')))
+	data["productinfo"]  = 'chocolate'
+	data["key"] = config.KEY
+	data["txnid"] = get_txnid()
+	data["hash"] = generate_hash(request, data["txnid"])
+	data["hash_string"] = generate_hash(request, data["txnid"])
+	print "hii",data["hash_string"]
+	data["firstname"] = "sujal"
+	data["email"] = "sujmaheshwari24@gmail.com"
+	data["phone"] = "876"
+	data["service_provider"] = constants.SERVICE_PROVIDER
+	data["furl"] = request.build_absolute_uri(reverse("failure"))
+	data["surl"] = request.build_absolute_uri(reverse("success"))
+	print data["furl"],data["surl"],"jjjj"
+	return render(request,'delivery.html',data)
+
 def success(request):
 	db,cur=db_init()
 	query="Select * from user_cart where user_id='%s'"%(request.session.get('user_id'))

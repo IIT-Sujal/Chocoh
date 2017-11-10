@@ -4,29 +4,36 @@
 <br>
 <br>
 <br>
-<div class="card-group">
+
 {% for i in chocolate %}
+<div class="card-group">
 	<div class="card">
 	<div class="card-block">
+	<div class="row">
 	<div class="col-md-12">
 	<div class="col-md-2">
+	<br>
 	<img class="card-img-top img-responsive" src="data:image/png;base64,{{i.7}}" style="width: 100%;float: left;"alt="Card image cap">
+	<br>
 	</div>
 	<div class="col-md-10">
 	  <h4 class="card-title">{{ i.2 }}</h4>
 	  <p class="card-text">Price :- {{ i.1 }} Quantity Available :- {{ i.3 }}</p>
 	  <p class="card-text"><small class="text-muted">Quantity_Sold:- {{ i.4 }}</small></p>
 	  <a href="/ceo/delete_from_product/{{ i.0 }}" class="btn btn-danger">Delete</a>
+	  <br>
+	  <br>
 	</div>
 	</div>
-	
+	</div>	
+	</div>
 	</div>
 	</div>
 {% endfor %}
 
+
 <div class="text-center col-md-12" id="fixedbutton">
-<a href="/ceo/add_to_products"><button type="button" class="btn btn-success" style="line-height: 0; padding-left: 60px; padding-right: 60px;font-family: 'Dancing Script';"><h2>Add More Products</h2></button></a>
-</div>
+<a href="/ceo/add_to_products"><button type="button" class="btn btn-success" style="float:right;line-height: 0; padding-left: 60px; padding-right: 60px;font-family: 'Dancing Script';"><h2>Add More Products</h2></button></a>
 </div>
 <br>
 <br>

@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render,redirect
 from django.contrib import messages
 import MySQLdb
+import hashlib
 from home.views import db_init
 from django.core.files.storage import FileSystemStorage
 from base64 import b64encode
@@ -56,11 +57,12 @@ def login(request):
 		email_id=request.POST.get('email_id')
 		password=request.POST.get('password')
 		if email_id and password:
-			query="select ceo_id from ceo where email_id='%s' and password='%s'"%(email_id,password)
+			query="select * from ceo where email_id='%s' and password='%s'"%(email_id,hashlib.md5(password.encode('utf8')).hexdigest())
 			cur.execute(query)
 			l=cur.fetchall()
 			if l:
-				request.session['ceo_id']=l[0][0]
+				request.session['ceo_id']=l[0][1]
+				request.session['ceo_password']=l[0][2]
 				messages.success(request,"Successful Login")
 				return redirect("ceohome")
 			else:
@@ -72,6 +74,7 @@ def logout(request):
 	db,cur=db_init()
 	if request.session.has_key('ceo_id'):
 		del request.session['ceo_id']
+		del request.session['ceo_password']
 	return redirect ("ceologin")
 def ceouser(request):
 	db,cur=db_init()
@@ -139,14 +142,8 @@ def add_to_products(request):
 		quantity_available=request.POST.get("quantity_available")
 		description=request.POST.get("description")
 		ratings=request.POST.get("ratings")
-		
 		if price and name and quantity_available and description and ratings:
-			image = request.FILES["product_image"]	
-			fs = FileSystemStorage()
-			filename = fs.save(image.name, image)
-			uploaded_file_url = fs.url(filename)	
-			uploaded_file_url="/home/sujal/DBMS-Project"+uploaded_file_url
-			image=read_file(uploaded_file_url)
+			image = request.FILES["product_image"].read()	
 			image=b64encode(image)
 			query="insert into chocolate(name,price,quantities_available,quantities_sold,ratings,image) values(%s,%s,%s,%s,%s,%s)"
 			args=(name,price,quantity_available,0,ratings,image)
