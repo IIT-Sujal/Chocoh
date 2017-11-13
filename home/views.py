@@ -9,8 +9,9 @@ from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.template.context_processors import csrf
 from random import randint
 # Create your views here.
+#sujal24.mysql.pythonanywhere-services.com
 def db_init():
-	db=MySQLdb.connect(host="localhost",user="sujal24",passwd="abc123abc",db="sujal24$chocoh")
+	db=MySQLdb.connect(host="sujal24.mysql.pythonanywhere-services.com",user="sujal24",passwd="abc123abc",db="sujal24$chocoh")
 	return db,db.cursor()
 
 def homepage(request):
@@ -137,8 +138,7 @@ def chocolate_detail(request,pk):
 def payment(request):
 	db,cur=db_init()
 
-@csrf_protect
-@csrf_exempt
+
 def delivery(request):
 	price=request.POST.get('price')
 	name=request.POST.get('name')
@@ -155,11 +155,12 @@ def delivery(request):
 		posted["email"]=email
 		posted["firstname"]=name
 		posted["productinfo"]='chocolate'
-		posted["surl"]="127.0.0.1/success"
-		posted["furl"]="127.0.0.1/failure"
+		posted["surl"]="https://sujal24.pythonanywhere.com/success"
+		posted["furl"]="https://sujal24.pythonanywhere.com/failure"
 		ContextData['posted']=posted		
 		ContextData['action']='/payment'
-		return render(request,'payment.html',ContextData)
+		print ":dsjjdsdh"
+		return payment(request, posted)
 	elif price :
 		amount=request.POST.get('amount')
 		return render(request,'delivery.html',{'price':price})
@@ -220,16 +221,13 @@ def failure(request):
 		print "Your Transaction ID for this transaction is ",txnid
 		print "We have received a payment of Rs. ", amount ,". Your order will soon be shipped."
  	return render_to_response("Failure.html",RequestContext(request,c))
-def payment(request):
+
+def payment(request,posted):
 	MERCHANT_KEY = "u2bLZsT6"
 	key="u2bLZsT6"
 	SALT = "Jb8UjE9prK"
 	PAYU_BASE_URL = "https://secure.payu.in/_payment"
 	action = ''
-	posted={}
-	for i in request.POST:
-		print "hi",i
-		posted[i]=request.POST[i]
 	hash_object = hashlib.sha256(b'randint(0,20)')
 	txnid=hash_object.hexdigest()[0:20]
 	hashh = ''
@@ -249,7 +247,4 @@ def payment(request):
 	hashh=hashlib.sha512(hash_string).hexdigest().lower()
 	print "hii",hashh
 	action =PAYU_BASE_URL
-	if(posted.get("key")!=None and posted.get("txnid")!=None and posted.get("productinfo")!=None and posted.get("firstname")!=None and posted.get("email")!=None):
-		return render_to_response('payment.html',{"posted":posted,"hashh":hashh,"MERCHANT_KEY":MERCHANT_KEY,"txnid":txnid,"hash_string":hash_string,"action":"https://secure.payu.in/_payment" })
-	else:
-		return render_to_response('payment.html',{"posted":posted,"hashh":hashh,"MERCHANT_KEY":MERCHANT_KEY,"txnid":txnid,"hash_string":hash_string,"action":"." })
+	return render_to_response('payment.html',{"posted":posted,"hashh":hashh,"MERCHANT_KEY":MERCHANT_KEY,"txnid":txnid,"hash_string":hash_string,"action":"https://secure.payu.in/_payment" })

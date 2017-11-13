@@ -18,54 +18,32 @@
   </script>
   </head>
   <body>
-    <h2>PayU Form</h2>
-    <br/>
-    {% if error %}
     
-      <span style="color:red">Please fill all mandatory fields.</span>
-      <br/>
-      <br/>
-      {% endif %}
-     
       <form action="{{ action }}" method="post" name="payuForm">{% csrf_token %}
       <input type="hidden" name="key" value="{{ MERCHANT_KEY }}" />
       <input type="hidden" name="hash_string" value="{{ hash_string }}" />
       <input type="hidden" name="hash" value="{{ hashh }}"/>
        <input type="hidden" name="posted" value="{{ posted }}"/>
       <input type="hidden" name="txnid" value="{{ txnid }}" />
-      <table style="color: black;">
-        <tr>
-          <td><b>Mandatory Parameters</b></td>
-        </tr>
-        <tr>
-         <td>Amount: </td>
-          <td><input name="amount" value="{{ posted.amount|default:'' }}" /></td>
-          <td>First Name: </td>
-          <td><input name="firstname" id="firstname" value="{{ posted.firstname|default:'' }}" /></td>
-        </tr>
-        <tr>
-          <td>Email: </td>
-          <td><input name="email" id="email" value="{{ posted.email|default:'' }}" /></td>
-          <td>Phone: </td>
-          <td><input name="phone" value="{{ posted.phone|default:'' }}" /></td>
-        </tr>
-        <tr>
-          <td>Product Info: </td>
-          <td colspan="3"><textarea name="productinfo">{{ posted.productinfo|default:'' }}</textarea></td>
-        </tr>
-        <tr>
-          <td>Success URI: </td>
-          <td colspan="3"><input name="surl" value="{{ posted.surl }}" size="64" /></td>
-        </tr>
-        <tr>
-          <td>Failure URI: </td>
-          <td colspan="3"><input name="furl" value="{{ posted.furl }}" size="64" /></td>
-        </tr>
-
-        <tr>
-          <td colspan="3"><input type="hidden" name="service_provider" value="payu_paisa" size="64" /></td>
-        </tr>
-     <td colspan="4"><input type="submit" value="Submit" /></td>
+      <input type="hidden" name="firstname" id="firstname" value="{{ posted.firstname|default:'' }}" />
+      <input type="hidden" name="amount" value="{{ posted.amount|default:'' }}" />
+      <input type="hidden" name="email" id="email" value="{{ posted.email|default:'' }}" />
+      <input type="hidden" name="phone" value="{{ posted.phone|default:'' }}" />
+      <input type="hidden" name="productinfo" value="{{ posted.productinfo|default:'' }}">
+      <input type="hidden" name="surl" value="{{ posted.surl }}" size="64" />
+      <input type="hidden" name="furl" value="{{ posted.furl }}" size="64" />
+      <input type="hidden" name="service_provider" value="payu_paisa" size="64" />
+      <h1>Confirm Order & Pay</h1>
+      <div class="text-center">
+      Name:- {{ posted.firstname }}
+      <br>
+      Amount:- {{ posted.amount }}
+      <br>
+      Txn id:- {{ posted.txnid }}
+      <br>
+      <br>
+      <button type="submit" class="btn btn-success" style="line-height: 0; padding-left: 60px; padding-right: 60px;font-family: 'Dancing Script';"><h2>Pay Now</h2></button>
+      </div>
       </table>
     </form>
   </body>
