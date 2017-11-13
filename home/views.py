@@ -1,20 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 import hashlib
-from django.shortcuts import render,redirect,reverse
+from django.shortcuts import render,redirect,reverse,render_to_response
 from django.contrib import messages
 import MySQLdb,uuid,hashlib
 import home.constants as constants,home.config as config
 from random import randint
 # Create your views here.
 def db_init():
-	db=MySQLdb.connect(host="sujal24.mysql.pythonanywhere-services.com",user="sujal24",passwd="abc123abc",db="sujal24$chocoh")
+	db=MySQLdb.connect(host="localhost",user="sujal24",passwd="abc123abc",db="sujal24$chocoh")
 	return db,db.cursor()
-
-def get_txnid():
-	hash_object = hashlib.sha256(b'randint(0,20)')
-	txnid=hash_object.hexdigest()[0:20]
-	return txnid
 
 def homepage(request):
 	db,cur=db_init()
@@ -23,25 +18,9 @@ def homepage(request):
 	product_list=cur.fetchall()
 	ContextData={'product_quantity':range(0,len(product_list)),'product_list':product_list}
 	return render(request, 'home.html',ContextData)
-def generate_hash(request, txnid):
-    try:
-        # get keys and SALT from dashboard once account is created.
-        # hashSequence = "key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5|udf6|udf7|udf8|udf9|udf10"
-        hash_string = get_hash_string(request,txnid)
-        generated_hash = hashlib.sha512(hash_string).hexdigest().lower()
-        return generated_hash
-    except Exception as e:
-        # log the error here.
-        logging.getLogger("error_logger").error(traceback.format_exc())
-        return None
  
 # create hash string using all the fields
-def get_hash_string(request, txnid):
-    hash_string = config.KEY+"|"+txnid+"|"+"603"+"|"+"chocolate"+"|"
-    hash_string += "sujal"+"|"+"sujmaheshwari24@gmail.com"+"|"
-    hash_string += "||||||||||"+config.SALT
-    print "woo", hash_string,"woo"
-    return hash_string
+
 
 def signup(request):
 	db,cur=db_init()
@@ -156,23 +135,29 @@ def chocolate_detail(request,pk):
 def payment(request):
 	db,cur=db_init()
 def delivery(request):
-	data={}
-	data["action"] = constants.PAYMENT_URL_LIVE 
-	data["amount"] = float(str(request.POST.get('price')))
-	data["productinfo"]  = 'chocolate'
-	data["key"] = config.KEY
-	data["txnid"] = get_txnid()
-	data["hash"] = generate_hash(request, data["txnid"])
-	data["hash_string"] = generate_hash(request, data["txnid"])
-	print "hii",data["hash_string"]
-	data["firstname"] = "sujal"
-	data["email"] = "sujmaheshwari24@gmail.com"
-	data["phone"] = "876"
-	data["service_provider"] = constants.SERVICE_PROVIDER
-	data["furl"] = request.build_absolute_uri(reverse("failure"))
-	data["surl"] = request.build_absolute_uri(reverse("success"))
-	print data["furl"],data["surl"],"jjjj"
-	return render(request,'delivery.html',data)
+	price=request.POST.get('price')
+	name=request.POST.get('name')
+	email=request.POST.get('email')
+	contact_no=request.POST.get('contact_no')
+	ad1=request.POST.get('address_line_1')
+	ad2=request.POST.get('address_line_2')
+	pincode=request.POST.get('pincode')
+	print 'hi',price,name,email,contact_no,ad1,ad2,pincode
+	if price and name and email and contact_no and ad1 and pincode:
+		ContextData={}
+		posted={}
+		posted["amount"]=price
+		posted["email"]=email
+		posted["firstname"]=name
+		posted["productinfo"]='chocolate'
+		posted["surl"]="sujal24.pythonanywhere.com/success"
+		posted["furl"]="sujal24.pythonanywhere.com/failure"
+		ContextData['posted']=posted		
+		ContextData['action']='/payment'
+		return render(request,'payment.html',ContextData)
+	elif price :
+		amount=request.POST.get('amount')
+		return render(request,'delivery.html',{'price':price})
 
 def success(request):
 	db,cur=db_init()
@@ -187,4 +172,35 @@ def failure(request):
 	messages.success(request, "Your Payment has been failed. In case your amount has been deducted sit back and relax. It will refunded to your account in 7-10 working days.")
 	return redirect("homepage")
 def payment(request):
-	return render(request, 'payment.html')
+	MERCHANT_KEY = "u2bLZsT6"
+	key="u2bLZsT6"
+	SALT = "Jb8UjE9prK"
+	PAYU_BASE_URL = "https://secure.payu.in/_payment"
+	action = ''
+	posted={}
+	for i in request.POST:
+		print "hi",i
+		posted[i]=request.POST[i]
+	hash_object = hashlib.sha256(b'randint(0,20)')
+	txnid=hash_object.hexdigest()[0:20]
+	hashh = ''
+	posted['txnid']=txnid
+	hashSequence = "key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5|udf6|udf7|udf8|udf9|udf10"
+	posted['key']=key
+	hash_string=''
+	hashVarsSeq=hashSequence.split('|')
+	for i in hashVarsSeq:
+		try:
+			hash_string+=str(posted[i])
+		except Exception:
+			hash_string+=''
+		hash_string+='|'
+	hash_string+=SALT
+	print "woo",hash_string,"woo"
+	hashh=hashlib.sha512(hash_string).hexdigest().lower()
+	print "hii",hashh
+	action =PAYU_BASE_URL
+	if(posted.get("key")!=None and posted.get("txnid")!=None and posted.get("productinfo")!=None and posted.get("firstname")!=None and posted.get("email")!=None):
+		return render_to_response('payment.html',{"posted":posted,"hashh":hashh,"MERCHANT_KEY":MERCHANT_KEY,"txnid":txnid,"hash_string":hash_string,"action":"https://secure.payu.in/_payment" })
+	else:
+		return render_to_response('payment.html',{"posted":posted,"hashh":hashh,"MERCHANT_KEY":MERCHANT_KEY,"txnid":txnid,"hash_string":hash_string,"action":"." })
