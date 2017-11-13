@@ -5,10 +5,12 @@ from django.shortcuts import render,redirect,reverse,render_to_response
 from django.contrib import messages
 import MySQLdb,uuid,hashlib
 import home.constants as constants,home.config as config
+from django.views.decorators.csrf import csrf_protect, csrf_exempt
+from django.template.context_processors import csrf
 from random import randint
 # Create your views here.
 def db_init():
-	db=MySQLdb.connect(host="sujal24.mysql.pythonanywhere-services.com",user="sujal24",passwd="abc123abc",db="sujal24$chocoh")
+	db=MySQLdb.connect(host="localhost",user="sujal24",passwd="abc123abc",db="sujal24$chocoh")
 	return db,db.cursor()
 
 def homepage(request):
@@ -134,6 +136,9 @@ def chocolate_detail(request,pk):
 	return render(request, 'product_detail.html',{'product':l[0]})
 def payment(request):
 	db,cur=db_init()
+
+@csrf_protect
+@csrf_exempt
 def delivery(request):
 	price=request.POST.get('price')
 	name=request.POST.get('name')
@@ -150,8 +155,8 @@ def delivery(request):
 		posted["email"]=email
 		posted["firstname"]=name
 		posted["productinfo"]='chocolate'
-		posted["surl"]="sujal24.pythonanywhere.com/success"
-		posted["furl"]="sujal24.pythonanywhere.com/failure"
+		posted["surl"]="127.0.0.1/success"
+		posted["furl"]="127.0.0.1/failure"
 		ContextData['posted']=posted		
 		ContextData['action']='/payment'
 		return render(request,'payment.html',ContextData)
@@ -159,18 +164,62 @@ def delivery(request):
 		amount=request.POST.get('amount')
 		return render(request,'delivery.html',{'price':price})
 
+@csrf_protect
+@csrf_exempt
 def success(request):
-	db,cur=db_init()
-	query="Select * from user_cart where user_id='%s'"%(request.session.get('user_id'))
-	cur.execute(query)
-	order_list=cur.fetchall()
-	query="Delete from user_cart where user_id='%s'"%(request.session.get('user_id'))
-	cur.execute(query)
-	messages.success(request, "Your Payment is successful and your order has been placed.")
+	c = {}
+   	c.update(csrf(request))
+	status=request.POST["status"]
+	firstname=request.POST["firstname"]
+	amount=request.POST["amount"]
+	txnid=request.POST["txnid"]
+	posted_hash=request.POST["hash"]
+	key=request.POST["key"]
+	productinfo=request.POST["productinfo"]
+	email=request.POST["email"]
+	salt="Jb8UjE9prK"
+	try:
+		additionalCharges=request.POST["additionalCharges"]
+		retHashSeq=additionalCharges+'|'+salt+'|'+status+'|||||||||||'+email+'|'+firstname+'|'+productinfo+'|'+amount+'|'+txnid+'|'+key
+	except Exception:
+		retHashSeq = salt+'|'+status+'|||||||||||'+email+'|'+firstname+'|'+productinfo+'|'+amount+'|'+txnid+'|'+key
+	hashh=hashlib.sha512(retHashSeq).hexdigest().lower()
+	if(hashh !=posted_hash):
+		print "Invalid Transaction. Please try again"
+	else:
+		print "Thank You. Your order status is ", status
+		print "Your Transaction ID for this transaction is ",txnid
+		print "We have received a payment of Rs. ", amount ,". Your order will soon be shipped."
+		messages.success(request, "Your order has been placed")
 	return redirect("homepage")
+
+@csrf_protect
+@csrf_exempt
 def failure(request):
-	messages.success(request, "Your Payment has been failed. In case your amount has been deducted sit back and relax. It will refunded to your account in 7-10 working days.")
-	return redirect("homepage")
+	c = {}
+    	c.update(csrf(request))
+	status=request.POST["status"]
+	firstname=request.POST["firstname"]
+	amount=request.POST["amount"]
+	txnid=request.POST["txnid"]
+	posted_hash=request.POST["hash"]
+	key=request.POST["key"]
+	productinfo=request.POST["productinfo"]
+	email=request.POST["email"]
+	salt="Jb8UjE9prK"
+	try:
+		additionalCharges=request.POST["additionalCharges"]
+		retHashSeq=additionalCharges+'|'+salt+'|'+status+'|||||||||||'+email+'|'+firstname+'|'+productinfo+'|'+amount+'|'+txnid+'|'+key
+	except Exception:
+		retHashSeq = salt+'|'+status+'|||||||||||'+email+'|'+firstname+'|'+productinfo+'|'+amount+'|'+txnid+'|'+key
+	hashh=hashlib.sha512(retHashSeq).hexdigest().lower()
+	if(hashh !=posted_hash):
+		print "Invalid Transaction. Please try again"
+	else:
+		print "Thank You. Your order status is ", status
+		print "Your Transaction ID for this transaction is ",txnid
+		print "We have received a payment of Rs. ", amount ,". Your order will soon be shipped."
+ 	return render_to_response("Failure.html",RequestContext(request,c))
 def payment(request):
 	MERCHANT_KEY = "u2bLZsT6"
 	key="u2bLZsT6"

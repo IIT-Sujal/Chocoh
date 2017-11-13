@@ -143,13 +143,20 @@ def add_to_products(request):
 		description=request.POST.get("description")
 		ratings=request.POST.get("ratings")
 		if price and name and quantity_available and description and ratings:
-			image = request.FILES["product_image"].read()	
-			image=b64encode(image)
-			query="insert into chocolate(name,price,quantities_available,quantities_sold,ratings,image) values(%s,%s,%s,%s,%s,%s)"
-			args=(name,price,quantity_available,0,ratings,image)
-			cur.execute(query,args)
-			db.commit()
-			return redirect("ceoproducts")
+			if len(request.FILES) != 0:
+				image = request.FILES["product_image"].read()	
+				image=b64encode(image)
+				query="insert into chocolate(name,price,quantities_available,quantities_sold,ratings,image) values(%s,%s,%s,%s,%s,%s)"
+				args=(name,price,quantity_available,0,ratings,image)
+				cur.execute(query,args)
+				db.commit()
+				return redirect("ceoproducts")
+			else:
+				query="insert into chocolate(name,price,quantities_available,quantities_sold,ratings) values(%s,%s,%s,%s,%s)"
+				args=(name,price,quantity_available,0,ratings)
+				cur.execute(query,args)
+				db.commit()
+				return redirect("ceoproducts")
 		else:
 			return render(request, 'addproducts.html')
 	else:

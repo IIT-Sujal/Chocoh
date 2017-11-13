@@ -13,7 +13,11 @@
 	<div class="col-md-12">
 	<div class="col-md-2">
 	<br>
+	{% if i.7 %}
 	<img class="card-img-top img-responsive" src="data:image/png;base64,{{i.7}}" style="width: 100%;float: left;"alt="Card image cap">
+	{% else %}
+	<img class="card-img-top img-responsive" src="{% static 'images/product.png' %}" style="width: 100%;float: left;"alt="Card image cap">
+	{% endif %}
 	<br>
 	</div>
 	<div class="col-md-10">

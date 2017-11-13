@@ -110,7 +110,11 @@ This can be a holiday greeting if the boxes are corporate Christmas gifts or any
           	<div class="item">
           	{% endif %}
             <div class="card col-md-4 text-center" >
+            				{% if i.7 %}
 							  <a href="/product_detail/{{ i.0 }}"><img src="data:image/png;base64,{{i.7}}" alt="Avatar" style="width:80%; height: 280px;"></a>
+							  {% else %}
+							  <a href="/product_detail/{{ i.0 }}"><img src="{% static 'images/product.png' %}" alt="Avatar" style="width:80%; height: 280px;"></a>
+							  {% endif %}
 							    <h4 style="font-size: 22px;"><b>{{ i.2 }} <br> &#x20B9 {{ i.1 	}}</b></h4> 
 							    <form action="/cart/{{ i.0 }}/0" method="POST">{% csrf_token %}
 							    <button type="submit" class="btn btn-default text-center">Add to Cart<span class="glyphicon glyphicon-shopping-cart"></span></button>

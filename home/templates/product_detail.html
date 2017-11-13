@@ -11,7 +11,11 @@
                     <br>
                     <br>
                     <br>    
+                    {% if product.7 %}
                     <img style="width:300px;height:300px;" src="data:image/png;base64,{{product.7}}" />
+                    {% else %}
+                    <img style="width:300px;height:300px;"  src="{% static 'images/product.png' %}"  />
+                    {% endif %}
                 </div>
                 <div class="col-xs-5" style="border:0px solid gray">
                     <!-- Datos del vendedor y titulo del producto -->
