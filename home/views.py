@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 import hashlib
 from django.shortcuts import render,redirect,reverse,render_to_response
 from django.contrib import messages
+from django.template import Context, Template,RequestContext
 import MySQLdb,uuid,hashlib
 import home.constants as constants,home.config as config
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
