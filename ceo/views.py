@@ -89,10 +89,11 @@ def ceouser(request):
 def ceofeedback(request):
 	db,cur=db_init()
 	if request.session.has_key('ceo_id'):
-		query="select * from feedback"
+		query="select * from messages"
 		cur.execute(query)
 		ContextData={}
 		ContextData['feedback']=cur.fetchall()
+		print ContextData
 		return render(request, 'ceofeedback.html',ContextData)
 	else:
 		return redirect("ceologin")

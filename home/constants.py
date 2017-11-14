@@ -1,5 +1,10 @@
 PAID_FEE_AMOUNT = 1
 PAID_FEE_PRODUCT_INFO = "Message showing product details."
-PAYMENT_URL_TEST = 'https://test.payu.in/_payment'
-PAYMENT_URL_LIVE = 'https://secure.payu.in/_payment'
+PAYMENT_URL_LIVE = 'https://test.payu.in/_payment'
+SALT = 'e5iIg1jwi8'
+KEY = 'rjQUPktU'
+#PAYMENT_URL_LIVE = 'https://secure.payu.in/_payment'
+# SALT = 'Jb8UjE9prK'
+# KEY = 'u2bLZsT6'
 SERVICE_PROVIDER = "payu_paisa"
+host="sujal24.mysql.pythonanywhere-services.com"

@@ -12,7 +12,7 @@ from random import randint
 # Create your views here.
 #sujal24.mysql.pythonanywhere-services.com
 def db_init():
-	db=MySQLdb.connect(host="sujal24.mysql.pythonanywhere-services.com",user="sujal24",passwd="abc123abc",db="sujal24$chocoh")
+	db=MySQLdb.connect(host=constants.host,user="sujal24",passwd="abc123abc",db="sujal24$chocoh")
 	return db,db.cursor()
 
 def homepage(request):
@@ -179,7 +179,7 @@ def success(request):
 	key=request.POST["key"]
 	productinfo=request.POST["productinfo"]
 	email=request.POST["email"]
-	salt="Jb8UjE9prK"
+	salt=constants.SALT
 	try:
 		additionalCharges=request.POST["additionalCharges"]
 		retHashSeq=additionalCharges+'|'+salt+'|'+status+'|||||||||||'+email+'|'+firstname+'|'+productinfo+'|'+amount+'|'+txnid+'|'+key
@@ -208,7 +208,7 @@ def failure(request):
 	key=request.POST["key"]
 	productinfo=request.POST["productinfo"]
 	email=request.POST["email"]
-	salt="Jb8UjE9prK"
+	salt= constants.SALT
 	try:
 		additionalCharges=request.POST["additionalCharges"]
 		retHashSeq=additionalCharges+'|'+salt+'|'+status+'|||||||||||'+email+'|'+firstname+'|'+productinfo+'|'+amount+'|'+txnid+'|'+key
@@ -218,16 +218,14 @@ def failure(request):
 	if(hashh !=posted_hash):
 		print "Invalid Transaction. Please try again"
 	else:
-		print "Thank You. Your order status is ", status
-		print "Your Transaction ID for this transaction is ",txnid
-		print "We have received a payment of Rs. ", amount ,". Your order will soon be shipped."
- 	return render_to_response("Failure.html",RequestContext(request,c))
+		messages.success(request, "Your order has not been placed")
+ 	return redirect("homepage")
 
 def payment(request,posted):
-	MERCHANT_KEY = "u2bLZsT6"
-	key="u2bLZsT6"
-	SALT = "Jb8UjE9prK"
-	PAYU_BASE_URL = "https://secure.payu.in/_payment"
+	MERCHANT_KEY = constants.KEY
+	key=constants.KEY 
+	SALT = constants.SALT 
+	PAYU_BASE_URL = constants.PAYMENT_URL_LIVE
 	action = ''
 	hash_object = hashlib.sha256(b'randint(0,20)')
 	txnid=hash_object.hexdigest()[0:20]
@@ -244,8 +242,6 @@ def payment(request,posted):
 			hash_string+=''
 		hash_string+='|'
 	hash_string+=SALT
-	print "woo",hash_string,"woo"
 	hashh=hashlib.sha512(hash_string).hexdigest().lower()
-	print "hii",hashh
 	action =PAYU_BASE_URL
-	return render_to_response('payment.html',{"posted":posted,"hashh":hashh,"MERCHANT_KEY":MERCHANT_KEY,"txnid":txnid,"hash_string":hash_string,"action":"https://secure.payu.in/_payment" })
+	return render_to_response('payment.html',{"posted":posted,"hashh":hashh,"MERCHANT_KEY":MERCHANT_KEY,"txnid":txnid,"hash_string":hash_string,"action":constants.PAYMENT_URL_LIVE })

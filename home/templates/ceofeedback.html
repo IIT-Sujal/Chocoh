@@ -2,25 +2,15 @@
 {% load staticfiles %}
 {% block content %}
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-{% if price == 0 %}
-	<h1> Oops , No Item in the Cart ! </h1>
-{% else %}
 <div class="card-group">
-{% for i in cart %}
+{% for i in feedback %}
 	<div class="card">
 	<div class="card-block">
-	<img class="card-img-top img-responsive" src="{% static 'images/product.png' %}" style="width: 10%;float: left;"alt="Card image cap">
 	<br>
-	  <h4 class="card-title">{{ i.5 }}</h4>
-	  <p class="card-text">Price (individual) - &#x20B9 {{ i.4 }}</p>
-	  <p class="card-text"><small class="text-muted">Quantity:- {{ i.2 }}</small></p>
-	  <a href="/product_detail/{{ i.3 }}" class="btn btn-primary">Change Quantity</a>
-	  <a href="/delete_from_cart/{{ i.3 }}" class="btn btn-danger">Delete</a>
+	  <h4 class="card-title">{{ i.1 }}</h4>
+	  <p class="card-text">{{ i.4 }}</p>
+	  <p class="card-text"><small class="text-muted">Email:- {{ i.2 }}</small></p>
+	  <p class="card-text"><small class="text-muted">Contact Number:- {{ i.3 }}</small></p>
 	</div>
 	<br>
 	</div>
