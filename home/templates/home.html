@@ -168,9 +168,10 @@ This can be a holiday greeting if the boxes are corporate Christmas gifts or any
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-6 col-md-offset-3" id="product-heading" style="font-size: 25px; background-color: rgba(255, 255, 255, 0.6); color: black;">
-					<p>Im a big fan of local business or outlets that provide authentic and unique characteristic products which are specific to a region than the brands . Which got me interested in Chocoh! initially.. I took a tour to the store .. loved their dark chocolate.. the one with almonds aswell .. then the fruit and nut & rum and raisin.. theCarousel chocolates make for an excellent gifting option and are economically priced .  </p>
+					<p>
 
-				<button type="button" class="btn btn-success" style="font-size:20px; color: black;">Know More!</button>
+					Im a big fan of local business or outlets that provide authentic and unique characteristic products which are specific to a region than the brands . Which got me interested in Chocoh! initially.. I took a tour to the store .. loved their dark chocolate.. the one with almonds aswell .. then the fruit and nut & rum and raisin.. the Carousel chocolates make for an excellent gifting option and are economically priced .  </p>	
+					<h4>By:- Divyani Maheshwari,Mumbai</h4>
 				<br>
 				<br>
 				</div>
@@ -201,17 +202,17 @@ This can be a holiday greeting if the boxes are corporate Christmas gifts or any
     <form class="col-md-8 text-center" method="POST" action="/contact_us_message">{% csrf_token %}
       	<div class="row">
           <label class="col-md-2" for="name"> Name : </label>
-          <input class="col-md-6 contact-us-form" id="name" name="name" type="text" size="50" required >
+          <input class="col-md-6 contact-us-form" id="name" name="name" type="text" size="50" placeholder="Enter Name" required >
         </div>
         <br>
       	<div class="row">
           <label class="col-md-2" for="name"> E-mail : </label>
-          <input class="col-md-6 contact-us-form" id="name" type="text"  name="email" size="50" required >
+          <input class="col-md-6 contact-us-form" id="name" type="text"  name="email" size="50" placeholder="Enter E-mail id" required >
         </div>
         <br>
       	<div class="row">
           <label class="col-md-2" for="name"> Contact No. : </label>
-          <input class="col-md-6 contact-us-form" id="contact" name="contact" type="text" size="50" >
+          <input class="col-md-6 contact-us-form" id="contact" name="contact" type="text" size="50" placeholder="Enter 10 digit contact number" pattern="[0-9]{10}">
         </div>
         <br>
       	<div class="row">

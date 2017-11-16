@@ -48,7 +48,6 @@ def contact(request):
 	email=request.POST.get('email')
 	contact_no=request.POST.get('contact')
 	user_message=request.POST.get('message')
-	print name,email,contact_no,user_message
 	if name and email and contact_no :
 		query="insert into messages(name,email_id,contact_no,messages) values('%s','%s','%s','%s')"%(name,email,contact_no,user_message)
 		cur.execute(query)
@@ -63,9 +62,8 @@ def orders(request):
 	db,cur=db_init()
 	query="select * from orders where order_id in (select orders.order_id from orders,place_order where place_order.user_id='%s' and orders.order_id=place_order.order_id)"%(request.session['user_id'])
 	cur.execute(query)
-	l=cur.fetchall()
-	a=()
-	if l[0]==a:
+	l=cur.fetchall()	
+	if len(l)==0:
 		return render(request,"orders.html",{'empty':0})
 	else:
 		return render(request,"orders.html",{'empty':1,'l':l})
@@ -116,7 +114,6 @@ def cart(request,pk,quantity_update):
 	db,cur=db_init()
 	if request.session.has_key('user_id'):
 		if pk!='0':
-			print 'rajputana',request.session['user_id']
 			query="select * from user_cart where user_id='%s' and chocolate_id='%s'"%(request.session['user_id'],pk) 
 			cur.execute(query)
 			already_bought=cur.fetchall()
@@ -125,24 +122,31 @@ def cart(request,pk,quantity_update):
 					quantity=already_bought[0][2]+1
 				else:
 					quantity=int(request.POST.get('quantity'))
-					available=get_quantity(pk)
-					print "hi", available
-					if available>=quantity:
-						query="DELETE FROM user_cart where user_id='%s' and chocolate_id='%s'"%(request.session['user_id'],pk) 
-						cur.execute(query)
-						query="INSERT INTO user_cart(user_id,chocolate_id,quantity) values('%s','%s','%s')"%(request.session['user_id'],pk,quantity)
-						cur.execute(query)
-						db.commit()
-						return redirect("cart", pk='0',quantity_update='0')
-					else:
-						messages.success(request,"Sorry, We don't have the required quantity.")
-						return redirect("homepage")
+				available=get_quantity(pk)
+				if available>=quantity:
+					query="DELETE FROM user_cart where user_id='%s' and chocolate_id='%s'"%(request.session['user_id'],pk) 
+					cur.execute(query)
+					query="INSERT INTO user_cart(user_id,chocolate_id,quantity) values('%s','%s','%s')"%(request.session['user_id'],pk,quantity)
+					cur.execute(query)
+					db.commit()
+					return redirect("cart", pk='0',quantity_update='0')
+				else:
+					messages.success(request,"Sorry, We don't have the required quantity.")
+					return redirect("homepage")
 			else:
-				query="INSERT INTO user_cart(user_id,chocolate_id) values('%s','%s')"%(request.session['user_id'],pk) 
-				cur.execute(query)
-			db.commit()
-			messages.success(request,"added to cart successfully")
-			return redirect('/home#productpage')
+				if quantity_update=='0':
+					quantity=1
+				else:
+					quantity=int(request.POST.get('quantity'))
+				available=get_quantity(pk)
+				if available>=quantity:
+					query="INSERT INTO user_cart(user_id,chocolate_id,quantity) values('%s','%s','%s')"%(request.session['user_id'],pk,quantity)
+					cur.execute(query)
+					db.commit()
+					return redirect("cart", pk='0',quantity_update='0')
+				else:
+					messages.success(request,"Sorry, We don't have the required quantity.")
+					return redirect("homepage")
 		else:
 			query="Select * from user_cart,chocolate where user_id='%s' and user_cart.chocolate_id=chocolate.chocolate_id"%(request.session['user_id']) 
 			cur.execute(query)
@@ -177,7 +181,6 @@ def delivery(request):
 	ad2=request.POST.get('address_line_2')
 	pincode=request.POST.get('pincode')
 	
-	print 'hi',price,name,email,contact_no,ad1,ad2,pincode
 	if price and name and email and contact_no and ad1 and pincode:
 		address=ad1+" "+ad2+" "+pincode
 		ContextData={}
@@ -190,7 +193,6 @@ def delivery(request):
 		posted["furl"]="https://sujal24.pythonanywhere.com/failure"
 		ContextData['posted']=posted		
 		ContextData['action']='/payment'
-		print ":dsjjdsdh"
 		return payment(request, posted,address,contact_no)
 	elif price :
 		amount=request.POST.get('amount')
@@ -217,11 +219,8 @@ def success(request):
 		retHashSeq = salt+'|'+status+'|||||||||||'+email+'|'+firstname+'|'+productinfo+'|'+amount+'|'+txnid+'|'+key
 	hashh=hashlib.sha512(retHashSeq).hexdigest().lower()
 	if(hashh !=posted_hash):
-		print "Invalid Transaction. Please try again"
+		messages.success(request, "Invalid Transaction. Please try again")
 	else:
-		print "Thank You. Your order status is ", status
-		print "Your Transaction ID for this transaction is ",txnid
-		print "We have received a payment of Rs. ", amount ,". Your order will soon be shipped."
 		messages.success(request, "Your order has been placed")
 	return redirect("homepage")
 
@@ -246,7 +245,7 @@ def failure(request):
 		retHashSeq = salt+'|'+status+'|||||||||||'+email+'|'+firstname+'|'+productinfo+'|'+amount+'|'+txnid+'|'+key
 	hashh=hashlib.sha512(retHashSeq).hexdigest().lower()
 	if(hashh !=posted_hash):
-		print "Invalid Transaction. Please try again"
+		messages.success(request, "Invalid Transaction. Please try again")
 	else:
 		messages.success(request, "Your Payment has been failed. Your order has turned into COD.")
  	return redirect("homepage")
@@ -295,7 +294,6 @@ def payment(request,posted,address,contact_no):
 	db.commit()
 	
 	db,cur=db_init()
-	print posted['amount'],address,contact_no,str(datetime.now().date()+timedelta(days=3)),str(datetime.now().date())	 
 	query="insert into orders(total_amount,delivery_address,mobile_no,delivery_date,order_date) values('%s','%s','%s','%s','%s')"%(posted['amount'],address,contact_no,str(datetime.now().date()+timedelta(days=3)),str(datetime.now().date()))
 	cur.execute(query)
 	db.commit()
