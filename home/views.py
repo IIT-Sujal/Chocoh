@@ -9,6 +9,7 @@ import home.constants as constants,home.config as config
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.template.context_processors import csrf
 from random import randint
+from datetime import datetime,timedelta
 # Create your views here.
 #sujal24.mysql.pythonanywhere-services.com
 def db_init():
@@ -166,8 +167,10 @@ def delivery(request):
 	ad1=request.POST.get('address_line_1')
 	ad2=request.POST.get('address_line_2')
 	pincode=request.POST.get('pincode')
+	
 	print 'hi',price,name,email,contact_no,ad1,ad2,pincode
 	if price and name and email and contact_no and ad1 and pincode:
+		address=ad1+" "+ad2+" "+pincode
 		ContextData={}
 		posted={}
 		posted["amount"]=price
@@ -179,7 +182,7 @@ def delivery(request):
 		ContextData['posted']=posted		
 		ContextData['action']='/payment'
 		print ":dsjjdsdh"
-		return payment(request, posted)
+		return payment(request, posted,address,contact_no)
 	elif price :
 		amount=request.POST.get('amount')
 		return render(request,'delivery.html',{'price':price})
@@ -239,7 +242,7 @@ def failure(request):
 		messages.success(request, "Your Payment has been failed. Your order has turned into COD.")
  	return redirect("homepage")
 
-def payment(request,posted):
+def payment(request,posted,address,contact_no):
 	db,cur=db_init()
 	query="select chocolate_id,quantity from user_cart where user_id='%s'"%(request.session['user_id'])
 	cur.execute(query)
@@ -259,8 +262,8 @@ def payment(request,posted):
 	SALT = constants.SALT 
 	PAYU_BASE_URL = constants.PAYMENT_URL_LIVE
 	action = ''
-	hash_object = hashlib.sha256(b'randint(0,20)')
-	txnid=hash_object.hexdigest()[0:20]
+	hash_object = hashlib.sha256(b'str(uuid.uuid4())')
+	txnid=uuid.uuid4().hex[0:20]
 	hashh = ''
 	posted['txnid']=txnid
 	hashSequence = "key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5|udf6|udf7|udf8|udf9|udf10"
@@ -276,4 +279,47 @@ def payment(request,posted):
 	hash_string+=SALT
 	hashh=hashlib.sha512(hash_string).hexdigest().lower()
 	action =PAYU_BASE_URL
+	
+	db,cur=db_init()
+	query="insert into payment(payment_id) values('%s')"%(txnid)
+	cur.execute(query)
+	db.commit()
+	
+	db,cur=db_init()
+	print posted['amount'],address,contact_no,str(datetime.now().date()+timedelta(days=3)),str(datetime.now().date())	 
+	query="insert into orders(total_amount,delivery_address,mobile_no,delivery_date,order_date) values('%s','%s','%s','%s','%s')"%(posted['amount'],address,contact_no,str(datetime.now().date()+timedelta(days=3)),str(datetime.now().date()))
+	cur.execute(query)
+	db.commit()
+	
+	db,cur=db_init()
+	query="select order_id from orders where total_amount='%s' and delivery_address='%s' and mobile_no='%s' and delivery_date='%s' and order_date='%s'"%(posted['amount'],address,contact_no,str(datetime.now().date()+timedelta(days=3)),str(datetime.now().date()))
+	cur.execute(query)
+	order_id=cur.fetchall()[0][0]
+	query="insert into transaction(order_id,payment_id,time_stamp) values('%s','%s','%s')"%(order_id,txnid,datetime.now().time())
+	cur.execute(query)
+	query="insert into place_order(user_id,order_id) values('%s','%s')"%(request.session['user_id'],order_id)
+	cur.execute(query)
+	query="select chocolate_id,quantity from user_cart where user_id='%s'"%(request.session['user_id'])
+	cur.execute(query)
+	l=cur.fetchall()
+	for i in l:
+		query="insert into purchased_product(order_id,chocolate_id,quantity) values('%s','%s','%s')"%(order_id,i[0],i[1])
+		cur.execute(query)
+	query="DELETE from user_cart where user_id='%s'"%(request.session['user_id'])
+	db.commit()
+
+	db,cur=db_init()
+	query="insert into pays(user_id,payment_id) values('%s','%s')"%(request.session['user_id'],txnid)
+	cur.execute(query)
+	db.commit()
+	
 	return render_to_response('payment.html',{"posted":posted,"hashh":hashh,"MERCHANT_KEY":MERCHANT_KEY,"txnid":txnid,"hash_string":hash_string,"action":constants.PAYMENT_URL_LIVE })
+
+
+#payment(payment_id int primary key not null auto_increment,status char(10));
+#orders(order_id int primary key not null auto_increment,total_amount int,delivery_address char(100),mobile_no char(10),delivery_date date,order_date date,delivery_status char(20) default 'not started',return_status char(10) default 'false',order_status char(10) default 'not paid');
+# purchased_product(order_id int, foreign key(order_id) references orders(order_id), chocolate_id int, foreign key(chocolate_id) references chocolate(chocolate_id),quantity int);
+# user_cart(user_id int, foreign key(user_id) references user(user_id),chocolate_id int, foreign key(chocolate_id) references chocolate(chocolate_id),quantity int default '1');
+#place_order(user_id int, foreign key(user_id) references user(user_id),order_id int, foreign key(order_id) references orders(order_id));	
+# transaction(order_id int, foreign key(order_id) references orders(order_id),payment_id int, foreign key(payment_id) references payment(payment_id),time_stamp time);
+#pays(user_id int ,foreign key(user_id) references user(user_id),payment_id int, foreign key(payment_id) references payment(payment_id));
