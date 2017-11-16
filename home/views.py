@@ -40,6 +40,7 @@ def signup(request):
 	 	return redirect("login")
 	else:
 		return render(request, 'signup.html',{})
+
 def contact(request):
 	db,cur=db_init()
 	name=request.POST.get('name')
@@ -80,11 +81,27 @@ def login(request):
 			return render(request,'login.html',ContextData)	
 	else:
 		return render(request, 'login.html',ContextData)
+
 def logout(request):
 	db,cur=db_init()
 	if request.session.has_key('user_id'):
 		del request.session['user_id']
 	return redirect ("homepage")
+
+def get_quantity(chocolate_id):
+	db,cur=db_init()
+	query="Select quantities_available from chocolate where chocolate_id='%s'"%(str(chocolate_id))
+	cur.execute(query)
+	l=cur.fetchall()
+	return int(l[0][0])
+
+def change_quantity(chocolate_id,quantity):
+	db,cur=db_init()
+	query="update chocolate set quantities_available='%s'where chocolate_id='%s'"%(str(quantity),str(chocolate_id))
+	cur.execute(query)
+	db.commit()
+	return None
+
 def cart(request,pk,quantity_update):
 	db,cur=db_init()
 	if request.session.has_key('user_id'):
@@ -97,17 +114,19 @@ def cart(request,pk,quantity_update):
 				if quantity_update=='0':
 					quantity=already_bought[0][2]+1
 				else:
-					quantity=request.POST.get('quantity')
-					query="DELETE FROM user_cart where user_id='%s' and chocolate_id='%s'"%(request.session['user_id'],pk) 
-					cur.execute(query)
-					query="INSERT INTO user_cart(user_id,chocolate_id,quantity) values('%s','%s','%s')"%(request.session['user_id'],pk,quantity)
-					cur.execute(query)
-					db.commit()
-					return redirect("cart", pk='0',quantity_update='0')
-				query="DELETE FROM user_cart where user_id='%s' and chocolate_id='%s'"%(request.session['user_id'],pk) 
-				cur.execute(query)
-				query="INSERT INTO user_cart(user_id,chocolate_id,quantity) values('%s','%s','%s')"%(request.session['user_id'],pk,quantity)
-				cur.execute(query)
+					quantity=int(request.POST.get('quantity'))
+					available=get_quantity(pk)
+					print "hi", available
+					if available>=quantity:
+						query="DELETE FROM user_cart where user_id='%s' and chocolate_id='%s'"%(request.session['user_id'],pk) 
+						cur.execute(query)
+						query="INSERT INTO user_cart(user_id,chocolate_id,quantity) values('%s','%s','%s')"%(request.session['user_id'],pk,quantity)
+						cur.execute(query)
+						db.commit()
+						return redirect("cart", pk='0',quantity_update='0')
+					else:
+						messages.success(request,"Sorry, We don't have the required quantity.")
+						return redirect("homepage")
 			else:
 				query="INSERT INTO user_cart(user_id,chocolate_id) values('%s','%s')"%(request.session['user_id'],pk) 
 				cur.execute(query)
@@ -124,21 +143,20 @@ def cart(request,pk,quantity_update):
 			return render(request, 'cart.html',{'cart':cart,'price':price})
 	else:
 		return redirect("login")
+
 def delete_from_cart(request,pk):
 	db,cur=db_init()
 	query="DELETE FROM user_cart where user_id='%s' and chocolate_id='%s'"%(request.session['user_id'],pk) 
 	cur.execute(query)
 	db.commit()
 	return redirect('/cart/0/0')
+
 def chocolate_detail(request,pk):
 	db,cur=db_init()
 	query="SELECT * from chocolate where chocolate_id='%s'"%(pk)
 	cur.execute(query)
 	l=cur.fetchall()
 	return render(request, 'product_detail.html',{'product':l[0]})
-def payment(request):
-	db,cur=db_init()
-
 
 def delivery(request):
 	price=request.POST.get('price')
@@ -218,10 +236,24 @@ def failure(request):
 	if(hashh !=posted_hash):
 		print "Invalid Transaction. Please try again"
 	else:
-		messages.success(request, "Your order has not been placed")
+		messages.success(request, "Your Payment has been failed. Your order has turned into COD.")
  	return redirect("homepage")
 
 def payment(request,posted):
+	db,cur=db_init()
+	query="select chocolate_id,quantity from user_cart where user_id='%s'"%(request.session['user_id'])
+	cur.execute(query)
+	l=cur.fetchall()
+	check=True
+	for i in l:
+		if int(i[1])>get_quantity(i[0]):
+			check=False
+	if check==False:
+		messages.success(request,"Some of your cart item is out of stock please remove that from cart.")
+		return redirect("homepage")
+	else:
+		for i in l:
+			change_quantity(i[0], get_quantity(i[0])-i[1])
 	MERCHANT_KEY = constants.KEY
 	key=constants.KEY 
 	SALT = constants.SALT 

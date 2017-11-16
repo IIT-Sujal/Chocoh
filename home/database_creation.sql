@@ -6,15 +6,11 @@ create table orders(order_id int primary key not null auto_increment,total_amoun
 create table chocolate(chocolate_id int primary key not null auto_increment,price int,name char(50) not null,quantities_available int,quantities_sold int,description char(200) default 'Wonderful Product',ratings int,image LONGBLOB);
 create table feedback(feedback_id int primary key not null auto_increment,user_id int, foreign key(user_id) references user(user_id), chocolate_id int, foreign key(chocolate_id) references chocolate(chocolate_id),approval boolean,upvotes int,content char(200));
 create table payment(payment_id int primary key not null auto_increment,status char(10));
-create table shipper(shipper_id int primary key not null auto_increment,delivery_charges int,location char(50));
 create table buys(chocolate_id int, foreign key(chocolate_id) references chocolate(chocolate_id),user_id int, foreign key(user_id) references user(user_id));
 create table purchased_product(order_id int, foreign key(order_id) references orders(order_id), chocolate_id int, foreign key(chocolate_id) references chocolate(chocolate_id),quantity int);
 create table user_cart(user_id int, foreign key(user_id) references user(user_id),chocolate_id int, foreign key(chocolate_id) references chocolate(chocolate_id),quantity int default '1');
-create table contact_info(user_id int, foreign key(user_id) references user(user_id),contact_no char(10));
 create table place_order(user_id int, foreign key(user_id) references user(user_id),order_id int, foreign key(order_id) references orders(order_id));
-create table shipper_info(shipper_id int, foreign key(shipper_id) references shipper(shipper_id), contact_no char(10));
 create table transaction(order_id int, foreign key(order_id) references orders(order_id),payment_id int, foreign key(payment_id) references payment(payment_id),time_stamp time);
-create table delivered_by(order_id int, foreign key(order_id) references orders(order_id),shipper_id int,foreign key(shipper_id) references shipper(shipper_id));
 create table pays(user_id int ,foreign key(user_id) references user(user_id),payment_id int, foreign key(payment_id) references payment(payment_id));
 create table ceo(ceo_id int primary key auto_increment,email_id char(50), password char(50));
 create table messages(message_id int auto_increment primary key,name char(50),email_id char(50),contact_no char(20),messages text);

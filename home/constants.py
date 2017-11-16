@@ -7,4 +7,5 @@ KEY = 'rjQUPktU'
 # SALT = 'Jb8UjE9prK'
 # KEY = 'u2bLZsT6'
 SERVICE_PROVIDER = "payu_paisa"
-host="sujal24.mysql.pythonanywhere-services.com"
+#host="sujal24.mysql.pythonanywhere-services.com"
+host="localhost"

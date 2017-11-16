@@ -15,6 +15,5 @@ urlpatterns = [
 	url(r'^delivery_details$', views.delivery,name='delivery'),
 	url(r'^success$', views.success,name='success'),
 	url(r'^failure$', views.failure,name='failure'),
-	url(r'^cancel$', views.failure,name='cancel'),
 	url(r'^payment$', views.payment,name='payment'),
 ]
