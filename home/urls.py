@@ -17,4 +17,5 @@ urlpatterns = [
 	url(r'^failure$', views.failure,name='failure'),
 	url(r'^payment$', views.payment,name='payment'),
 	url(r'^your_orders$', views.orders,name='orders'),
+	url(r'^return/(?P<pk>[0-9]+)$', views.returnorder,name='returnorder'),
 ]

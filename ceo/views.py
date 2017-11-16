@@ -38,10 +38,10 @@ def ceoorderpast(request):
 def ceoorder(request):	
 	db,cur=db_init()
 	if request.session.has_key('ceo_id'):
-		query="select * from orders where order_status='pending'"
+		query="select * from orders"
 		cur.execute(query)
 		ContextData={}
-		ContextData['orders']=cur.fetchall()
+		ContextData['l']=cur.fetchall()
 		ContextData['status']='current'
 		return render(request, 'ceoorder.html',ContextData)
 	else:
@@ -97,16 +97,7 @@ def ceofeedback(request):
 		return render(request, 'ceofeedback.html',ContextData)
 	else:
 		return redirect("ceologin")
-def shipper_info(request):
-	db,cur=db_init()
-	if request.session.has_key('ceo_id'):
-		query="select * from shipper_info"
-		cur.execute(query)
-		ContextData={}
-		ContextData['shipper_info']=cur.fetchall()
-		return render(request, 'ceoshipper_info.html',ContextData)
-	else:
-		return redirect("ceologin")
+
 def ceoproducts(request):
 	db,cur=db_init()
 	if request.session.has_key('ceo_id'):
@@ -117,6 +108,7 @@ def ceoproducts(request):
 		return render(request, 'ceoproducts.html',ContextData)
 	else:
 		return redirect("ceologin")
+
 def delete_from_product(request,pk):
 	db,cur=db_init()
 	if request.session.has_key('ceo_id'):

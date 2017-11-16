@@ -7,8 +7,6 @@ def is_ceo_authenticate(request):
 		query="select * from ceo where email_id='%s' and password='%s'"%(request.session['ceo_id'],request.session['ceo_password'])
 		cur.execute(query)
 		l=cur.fetchall()
-
-		print l,"ramukaka",request.session['ceo_id'],request.session['ceo_password']
 		if l:
 			return { 'ceo':True }
 		else :

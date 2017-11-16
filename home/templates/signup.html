@@ -14,11 +14,11 @@
 		    	<form action="/signup" method="POST">{% csrf_token %}
 						<div class="form-group">
 						<label for="usr">Name:</label>
-						<input type="text" class="form-control" id="usr" name="usr" required>
+						<input type="text" class="form-control" id="usr" name="usr" placeholder="Enter Name" required>
 						</div>
 						<div class="form-group">
 						<label for="email">Email address:</label>
-						<input type="email" class="form-control" id="email" name="email" required>
+						<input type="email" class="form-control" placeholder="Enter Email address" id="email" name="email" required>
 						</div>
 						<div class="form-group">
 						<label for="contact">Contact No.:</label>
@@ -26,7 +26,7 @@
 						</div>
 						<div class="form-group">
 						<label for="pwd">Password:</label>
-						<input type="password" class="form-control" id="pwd" name="pwd" required>
+						<input type="password" class="form-control" id="pwd" name="pwd" placeholder="Enter Password" required>
 						</div>
 						<div class="text-center">
 						<button type="submit" class="btn btn-default">Submit</button>

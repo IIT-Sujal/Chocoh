@@ -67,6 +67,13 @@ def orders(request):
 		return render(request,"orders.html",{'empty':0})
 	else:
 		return render(request,"orders.html",{'empty':1,'l':l})
+def returnorder(request,pk):
+	db,cur=db_init()
+	query="update orders set order_status='return' where order_id='%s'"%(pk)
+	cur.execute(query)
+	db.commit()
+	messages.success(request,"Your request has been taken. We will send you the refund after taking the product.")
+	return redirect("homepage") 
 def login(request):
 	if request.session.has_key('user_id'):
 		messages.success(request, "Already Logged in!")
@@ -77,11 +84,12 @@ def login(request):
 	email_id=request.POST.get('email_id')
 	password=request.POST.get('password')
 	if email_id and password:
-		query="select user_id from user where email_id='%s' and password='%s'"%(email_id,hashlib.md5(password.encode('utf8')).hexdigest())
+		query="select user_id,password from user where email_id='%s' and password='%s'"%(email_id,hashlib.md5(password.encode('utf8')).hexdigest())
 		cur.execute(query)
 		l=cur.fetchall()
 		if l:
 			request.session['user_id']=l[0][0]
+			request.session['password']=l[0][1]
 			messages.success(request,"Successful Login")
 			return redirect("homepage")
 		else:
@@ -180,7 +188,7 @@ def delivery(request):
 	ad1=request.POST.get('address_line_1')
 	ad2=request.POST.get('address_line_2')
 	pincode=request.POST.get('pincode')
-	
+	paymentmethod=request.POST.get('pm')
 	if price and name and email and contact_no and ad1 and pincode:
 		address=ad1+" "+ad2+" "+pincode
 		ContextData={}
@@ -193,7 +201,7 @@ def delivery(request):
 		posted["furl"]="https://sujal24.pythonanywhere.com/failure"
 		ContextData['posted']=posted		
 		ContextData['action']='/payment'
-		return payment(request, posted,address,contact_no)
+		return payment(request, posted,address,contact_no,paymentmethod)
 	elif price :
 		amount=request.POST.get('amount')
 		return render(request,'delivery.html',{'price':price})
@@ -250,7 +258,7 @@ def failure(request):
 		messages.success(request, "Your Payment has been failed. Your order has turned into COD.")
  	return redirect("homepage")
 
-def payment(request,posted,address,contact_no):
+def payment(request,posted,address,contact_no,paymentmethod):
 	db,cur=db_init()
 	query="select chocolate_id,quantity from user_cart where user_id='%s'"%(request.session['user_id'])
 	cur.execute(query)
@@ -297,7 +305,7 @@ def payment(request,posted,address,contact_no):
 	query="insert into orders(total_amount,delivery_address,mobile_no,delivery_date,order_date) values('%s','%s','%s','%s','%s')"%(posted['amount'],address,contact_no,str(datetime.now().date()+timedelta(days=3)),str(datetime.now().date()))
 	cur.execute(query)
 	db.commit()
-	
+
 	db,cur=db_init()
 	query="select order_id from orders where total_amount='%s' and delivery_address='%s' and mobile_no='%s' and delivery_date='%s' and order_date='%s'"%(posted['amount'],address,contact_no,str(datetime.now().date()+timedelta(days=3)),str(datetime.now().date()))
 	cur.execute(query)
@@ -313,14 +321,22 @@ def payment(request,posted,address,contact_no):
 		query="insert into purchased_product(order_id,chocolate_id,quantity) values('%s','%s','%s')"%(order_id,i[0],i[1])
 		cur.execute(query)
 	query="DELETE from user_cart where user_id='%s'"%(request.session['user_id'])
-	db.commit()
-
-	db,cur=db_init()
-	query="insert into pays(user_id,payment_id) values('%s','%s')"%(request.session['user_id'],txnid)
 	cur.execute(query)
 	db.commit()
 	
-	return render_to_response('payment.html',{"posted":posted,"hashh":hashh,"MERCHANT_KEY":MERCHANT_KEY,"txnid":txnid,"hash_string":hash_string,"action":constants.PAYMENT_URL_LIVE })
+	db,cur=db_init()
+	query="insert into pays(user_id,payment_id) values('%s','%s')"%(request.session['user_id'],txnid)
+	cur.execute(query)
+	db.commit()	
+	
+	if paymentmethod=="cod":
+		query="update orders set order_status='cod' where order_id='%s'"%(txnid)
+		cur.execute(query)
+		db.commit()
+		messages.success(request, "Your Order has been placed.")
+		return redirect("homepage")
+	else:
+		return render_to_response('payment.html',{"posted":posted,"hashh":hashh,"MERCHANT_KEY":MERCHANT_KEY,"txnid":txnid,"hash_string":hash_string,"action":constants.PAYMENT_URL_LIVE })
 
 
 #payment(payment_id int primary key not null auto_increment,status char(10));
