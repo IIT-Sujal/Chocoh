@@ -59,7 +59,16 @@ def contact(request):
 		messages.success(request,"Please fill the form properly to get in touch with us.")
 		return redirect("homepage")
 
-
+def orders(request):
+	db,cur=db_init()
+	query="select * from orders where order_id in (select orders.order_id from orders,place_order where place_order.user_id='%s' and orders.order_id=place_order.order_id)"%(request.session['user_id'])
+	cur.execute(query)
+	l=cur.fetchall()
+	a=()
+	if l[0]==a:
+		return render(request,"orders.html",{'empty':0})
+	else:
+		return render(request,"orders.html",{'empty':1,'l':l})
 def login(request):
 	if request.session.has_key('user_id'):
 		messages.success(request, "Already Logged in!")

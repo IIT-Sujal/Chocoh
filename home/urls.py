@@ -16,4 +16,5 @@ urlpatterns = [
 	url(r'^success$', views.success,name='success'),
 	url(r'^failure$', views.failure,name='failure'),
 	url(r'^payment$', views.payment,name='payment'),
+	url(r'^your_orders$', views.orders,name='orders'),
 ]

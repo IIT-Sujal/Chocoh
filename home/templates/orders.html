@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+
+<br>
+<br>
+<br>
+{% if empty == 0 %}
+	<h1> Oops , No Item in the Cart ! </h1>
+{% else %}
+<div class="card-group">
+{% for i in l %}
+	<div class="card">
+	<div class="card-block">
+	<img class="card-img-top img-responsive" src="{% static 'images/order.png' %}" style="width: 10%;float: left;"alt="Card image cap">
+	<br>
+	  <h4 class="card-title"> Order Date: {{ i.5 }}</h4>
+	  <p class="card-text">Price - &#x20B9 {{ i.1 }}</p>
+	  <p class="card-text"><small class="text-muted">Address:- {{ i.2 }} Delivery Date(Expected):{{ i.4 }}</small></p>
+	  <a href="/delete_from_cart/{{ i.3 }}" class="btn btn-danger">Return</a>
+	</div>
+	<br>
+	</div>
+{% endfor %}
+</div>
+{% endif %}
+{% endblock %}
