@@ -204,6 +204,17 @@ def delivery(request):
 		return payment(request, posted,address,contact_no,paymentmethod)
 	elif price :
 		amount=request.POST.get('amount')
+		db,cur=db_init()
+		query="select chocolate_id,quantity from user_cart where user_id='%s'"%(request.session['user_id'])
+		cur.execute(query)
+		l=cur.fetchall()
+		check=True
+		for i in l:
+			if int(i[1])>get_quantity(i[0]):
+				check=False
+		if check==False:
+			messages.success(request,"Some of your cart item is out of stock please remove that from cart.")
+			return redirect("homepage")
 		return render(request,'delivery.html',{'price':price})
 
 @csrf_protect

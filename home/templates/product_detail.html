@@ -27,9 +27,7 @@
                         <h4>Quantity</h4>
                         <div>
                         <form action="/cart/{{ product.0 }}/1" method="POST">{% csrf_token %}
-                            <div class="btn-minus"><span class="glyphicon glyphicon-minus"></span></div>
                             <input value="1" name="quantity" style="color: black;" />
-                            <div class="btn-plus"><span class="glyphicon glyphicon-plus"></span></div>
                         </div>
                     </div>                
                             <div class="section" style="padding-bottom:20px;">
