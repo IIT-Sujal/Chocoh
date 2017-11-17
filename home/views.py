@@ -33,7 +33,14 @@ def signup(request):
 	email_id=request.POST.get('email')
 	contact_no=request.POST.get('contact')
 	password=request.POST.get('pwd')
+		
 	if name and email_id and contact_no and password:
+		query="select user_id from user where email_id='%s'"%(email_id)
+		cur.execute(query)
+		l=cur.fetchall()
+		if l:
+			messages.success(request,"This email id has already been registered.")
+			return render(request, 'signup.html',{})
 	 	messages.success(request, "Successful Signup!")
 	 	query="INSERT INTO user(name,password,email_id,contact_no) values('%s','%s','%s','%s');"%(name,hashlib.md5(password.encode('utf8')).hexdigest(),email_id,contact_no)
 		cur.execute(query)
