@@ -21,5 +21,8 @@ insert into chocolate(name,price,quantities_available,quantities_sold,ratings) v
 insert into chocolate(name,price,quantities_available,quantities_sold,ratings) values("fruit and nut4",303,10,10,5);
 insert into chocolate(name,price,quantities_available,quantities_sold,ratings) values("fruit and nut5",304,10,10,5);
 insert into chocolate(name,price,quantities_available,quantities_sold,ratings) values("fruit and nut6",305,10,10,5);
-INSERT INTO user(name,password,email_id,contact_no) values("sujal","03c7c0ace395d80182db07ae2c30f034","s@s","9");
+INSERT INTO user(name,password,email_id,contact_no) values("sujal","03c7c0ace395d80182db07ae2c30f034","s@s","8769308100");
+INSERT INTO user(name,password,email_id,contact_no) values("sujal","03c7c0ace395d80182db07ae2c30f034","sujmaheshwari24@gmail.com","8769308100");
+INSERT INTO user(name,password,email_id,contact_no) values("sujal","03c7c0ace395d80182db07ae2c30f034","itwpractice@gmail.com","8769308100");
 INSERT INTO ceo(email_id,password) values("k@k","8ce4b16b22b58894aa86c421e8759df3");
+INSERT INTO ceo(email_id,password) values("sujal.maheswari.cse15@iitbhu.ac.in","8ce4b16b22b58894aa86c421e8759df3");
