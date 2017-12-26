@@ -10,9 +10,9 @@
 {% else %}
 <div class="card-group">
 {% for i in cart %}
-	<div class="card">
+	<div class="card row" style="padding-left: 20px;">
 	<div class="card-block">
-	<img class="card-img-top img-responsive" src="{% static 'images/product.png' %}" style="width: 10%;float: left;"alt="Card image cap">
+	<img class="card-img-top col-md-2 col-sm-2 col-xs-3" src="{% static 'images/product.png' %}" style="float: left;"alt="Card image cap">
 	<br>
 	  <h4 class="card-title">{{ i.5 }}</h4>
 	  <p class="card-text">Price (individual) - &#x20B9 {{ i.4 }}</p>
@@ -32,7 +32,7 @@
 <br>
 <br>
 <form action="/delivery_details" method="POST">{% csrf_token %}
-<div class="text-center col-md-12" id="fixedbutton">
+<div class="col-md-12 col-xs-12 col-sm-12 text-center" id="fixedbutton">
 <input type="hidden" name="price" value="{{ price }}">
 <button type="submit" class="btn btn-success" style="line-height: 0; padding-left: 60px; padding-right: 60px;font-family: 'Dancing Script';"><h2>Buy &#x20B9 {{ price }}</h2></button>
 </div>

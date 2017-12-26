@@ -19,7 +19,7 @@
 			    <div class="item active">
 			    	<div class="parent-slider-image">
 				    	<div class="slide-image">
-				        	<img src="{% static 'images/slide1.jpg' %}" alt="Chocolates are getting baked!" id="slider" class="img-responsive" style="width: 100%;">
+				        	<img src="{% static 'images/slide1.jpg' %}" alt="Chocolates are getting baked!" id="slider" class="img-responsive" style="width: 100%;height: 680px;object-fit: cover;object-position: center;">
 				        </div>
 				        <div class="text-center" id="slider-logo">
 				        	<p>ChocOH!</p>
@@ -28,13 +28,13 @@
 			        <div class="carousel-caption">
 
 			          <h1>"I have never met a chocolate I didn't like..."</h1>
-			      <div class="home-button-product"> <a href="#productpage" class="btn btn-lg  btn-warning">OUR PRODUCTS</a> </div>
+			      <div class="home-button-product"> <a href="/home#productpage" class="btn btn-lg  btn-warning">OUR PRODUCTS</a> </div>
 			        </div>     
 					    </div>
 					    <div class="item">
 					    	<div class="parent-slider-image">
 						    	<div class="slide-image">
-							        <img src="{% static 'images/slide2.jpg' %}" alt="Chocolates are getting baked!" id="slider" style="width:100%;">
+							        <img src="{% static 'images/slide2.jpg' %}" alt="Chocolates are getting baked!" id="slider" style="width: 100%;height: 680px;object-fit: cover;object-position: center;">
 				        </div>
 				        <div class="text-center" id="slider-logo">
 				        	<p>ChocOH!</p>
@@ -61,17 +61,15 @@
 
 <div>
 <section id="specialpage">	
-		<div class="container-fluid img-responsive" style="background-image: url({% static 'images/timeline-1.jpg' %}); background-repeat: no-repeat; background-size: 100%; ">
+		<div class="container-fluid img-responsive" style="background-image: url({% static 'images/special_image1.jpg' %}); background-repeat: no-repeat; -webkit-background-size:cover;
+-moz-background-size:cover;-o-background-size:cover;background-size:cover;background-position:center; ">
 			<div class="row">
 				<div class="col-md-12" id="product-heading">
 					<p><u style="text-decoration: underline; text-decoration-color:orange; text-decoration-style:  ">Special!</u></p>
 				</div>
 			</div>
 		<div class="row">
-		<div class="col-md-6 ">
-			<img src="{% static 'images/special.png' %}" alt="Avatar" style="width:120%; padding-left: 80px;">
-		</div>
-		<div class="col-md-4 col-md-offset-1 text-center" style="font-family: 'Courgette', cursive; font-size: 18px;">
+		<div class="col-md-6 col-md-offset-3 text-center" style="font-family: 'Courgette', cursive; font-size: 130%; line-height: 170%;font-weight: 1px;">
 			<p> Chocolates - loved by everyone from children to adults to oldies - a popular choice for marketing gifts. It can be given as a corporate gift for employees or a business gift for clients. They can also be considered if you are exploring corporate giveaway ideas.
 			</p>
 			<p>	
@@ -90,7 +88,8 @@ This can be a holiday greeting if the boxes are corporate Christmas gifts or any
 </section>	
 </div>
 	
-<section id="productpage" style="background-image: url({% static 'images/contact_us_bg.jpg' %});">
+<section id="productpage" style="background-image: url({% static 'images/contact_us_bg.jpg' %}); background-repeat: no-repeat; -webkit-background-size:cover;
+-moz-background-size:cover;-o-background-size:cover;background-size:cover;background-position:center; ">
 	<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-12" id="product-heading">
@@ -98,7 +97,7 @@ This can be a holiday greeting if the boxes are corporate Christmas gifts or any
 				</div>
 			</div>
 	</div>
-	<div class="container">
+<div class="container mobile-devices">
   <div class="row">
     <div class="col-md-12">
       <div class="carousel slide multi-item-carousel" id="theCarousel">
@@ -109,7 +108,7 @@ This can be a holiday greeting if the boxes are corporate Christmas gifts or any
           	{% else %}
           	<div class="item">
           	{% endif %}
-            <div class="card col-md-4 text-center" >
+            <div class="card col-md-8 text-center" >
             				{% if i.7 %}
 							  <a href="/product_detail/{{ i.0 }}"><img src="data:image/png;base64,{{i.7}}" alt="Avatar" style="width:80%; height: 280px;"></a>
 							  {% else %}
@@ -126,19 +125,93 @@ This can be a holiday greeting if the boxes are corporate Christmas gifts or any
           {% endfor %}
         </div>
         <div>
-        <a class="left carousel-control" href="#theCarousel" data-slide="prev" style="width:10%;left: -80px;"><i class="glyphicon glyphicon-chevron-left"></i></a>
+        <a class="left carousel-control" href="#theCarousel" data-slide="prev" style="width:10%;left: 0px;"><i class="glyphicon glyphicon-chevron-left"></i></a>
     	</div>
-        <a class="right carousel-control" href="#theCarousel" data-slide="next" style="width:10%;right: -80px;"><i class="glyphicon glyphicon-chevron-right" style="padding-left: 0;"></i></a>
+        <a class="right carousel-control" href="#theCarousel" data-slide="next" style="width:10%;right: 0px;"><i class="glyphicon glyphicon-chevron-right" style="padding-left: 0;"></i></a>
       </div>
     </div>
   </div>
 </div>
-<script src="{% static 'js/bootstrap.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/home.js' %}"></script>
+</div>
+<div class="container ipad-devices">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="carousel slide multi-item-carousel" id="theCarousel1">
+        <div class="carousel-inner">
+        {% for i in product_list %}
+        	{% if forloop.first %}
+          <div class="item active">
+          	{% elif forloop.counter0|divisibleby:2 %}
+          	<div class="item">
+          	{% endif %}
+            <div class="card col-sm-6 text-center" >
+            				{% if i.7 %}
+							  <a href="/product_detail/{{ i.0 }}"><img src="data:image/png;base64,{{i.7}}" alt="Avatar" style="width:80%; height: 280px;"></a>
+							  {% else %}
+							  <a href="/product_detail/{{ i.0 }}"><img src="{% static 'images/product.png' %}" alt="Avatar" style="width:80%; height: 280px;"></a>
+							  {% endif %}
+							    <h4 style="font-size: 22px;"><b>{{ i.2 }} <br> &#x20B9 {{ i.1 	}}</b></h4> 
+							    <form action="/cart/{{ i.0 }}/0" method="POST">{% csrf_token %}
+							    <button type="submit" class="btn btn-default text-center">Add to Cart<span class="glyphicon glyphicon-shopping-cart"></span></button>
+							    </form>
+							</div>
+		{% if forloop.first %}					
+		{% elif forloop.counter|divisibleby:2 %}
+          </div>
+        {% endif %}  
+          {% endfor %}
+        </div>
+        <div>
+        <a class="left carousel-control" href="#theCarousel1" data-slide="prev" style="width:10%;left: 0px;"><i class="glyphicon glyphicon-chevron-left"></i></a>
+    	</div>
+        <a class="right carousel-control" href="#theCarousel1" data-slide="next" style="width:10%;right: 0px;"><i class="glyphicon glyphicon-chevron-right" style="padding-left: 0;"></i></a>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="container laptop-devices">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="carousel slide multi-item-carousel" id="theCarousel2">
+        <div class="carousel-inner">
+        {% for i in product_list %}
+        	{% if forloop.first %}
+          <div class="item active">
+          	{% elif forloop.counter0|divisibleby:3 %}
+          	<div class="item">
+          	{% endif %}
+            <div class="card col-md-4 text-center" >
+            				{% if i.7 %}
+							  <a href="/product_detail/{{ i.0 }}"><img src="data:image/png;base64,{{i.7}}" alt="Avatar" style="width:80%; height: 280px;"></a>
+							  {% else %}
+							  <a href="/product_detail/{{ i.0 }}"><img src="{% static 'images/product.png' %}" alt="Avatar" style="width:80%; height: 280px;"></a>
+							  {% endif %}
+							    <h4 style="font-size: 22px;"><b>{{ i.2 }} <br> &#x20B9 {{ i.1 	}}</b></h4> 
+							    <form action="/cart/{{ i.0 }}/0" method="POST">{% csrf_token %}
+							    <button type="submit" class="btn btn-default text-center">Add to Cart<span class="glyphicon glyphicon-shopping-cart"></span></button>
+							    </form>
+							</div>
+		{% if forloop.first %}					
+		{% elif forloop.counter|divisibleby:3 %}
+          </div>
+        {% endif %}  
+          {% endfor %}
+        </div>
+        <div>
+        <a class="left carousel-control" href="#theCarousel2" data-slide="prev" style="width:10%;left: 0px;"><i class="glyphicon glyphicon-chevron-left"></i></a>
+    	</div>
+        <a class="right carousel-control" href="#theCarousel2" data-slide="next" style="width:10%;right: 0px;"><i class="glyphicon glyphicon-chevron-right" style="padding-left: 0;"></i></a>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
 	<br>
 	<br>
 </section>
-<section id="Aboutuspage" style="background-image: url({% static 'images/news-2.jpg' %}); background-repeat: no-repeat; background-size: 100%;">
+<section id="Aboutuspage" style="background-image: url({% static 'images/news-2.jpg' %}); background-repeat: no-repeat; -webkit-background-size:cover;
+-moz-background-size:cover;-o-background-size:cover;background-size:cover;background-position:center; ">
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-12" id="product-heading">
@@ -148,7 +221,8 @@ This can be a holiday greeting if the boxes are corporate Christmas gifts or any
 		</div>
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-md-6 col-md-offset-3" id="product-heading" style="font-size: 27px; background-color: rgba(255, 255, 255, 0.6); color: black;">
+				<div class="col-md-6 col-md-offset-3" id="product-heading" style="font-size: 170%; background-color: rgba(255, 255, 255, 0.6); color: black;">
+					<img src="{% static 'images/anupam.jpg' %}"  class="img-circle text-center" style="width: 160px; padding-top: 10px;">
 					<p>Starting from a small chocolate business from house, we have came to this position to open a business. Trying different flavors and mixtures, our chocolates became famous in the city. All our ingredients are of the best organic quality and are brewed according to the original recipe. Every day decadent chocolate bars are carefully crafted using the timeless combination of chocolate and love.    </p>
 				</div>
 			</div>
@@ -157,7 +231,8 @@ This can be a holiday greeting if the boxes are corporate Christmas gifts or any
 			<br>
 		</div>
 </section>	
-<section id="Reviewspage" style="background-image: url({% static 'images/news-1.jpg' %}); background-repeat: no-repeat; background-size: 100%;">
+<section id="Reviewspage" style="background-image: url({% static 'images/news-1.jpg' %}); background-repeat: no-repeat; -webkit-background-size:cover;
+-moz-background-size:cover;-o-background-size:cover;background-size:cover;background-position:center; ">
 	<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-12" id="product-heading">
@@ -167,20 +242,22 @@ This can be a holiday greeting if the boxes are corporate Christmas gifts or any
 		</div>
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-md-6 col-md-offset-3" id="product-heading" style="font-size: 25px; background-color: rgba(255, 255, 255, 0.6); color: black;">
+				<div class="col-md-6 col-md-offset-3" id="product-heading" style="font-size: 170%; background-color: rgba(255, 255, 255, 0.6); color: black;">
+					<img src="{% static 'images/divyani.jpg' %}"  class="img-circle text-center" style="width: 160px; padding-top: 10px;">
 					<p>
-
-					Im a big fan of local business or outlets that provide authentic and unique characteristic products which are specific to a region than the brands . Which got me interested in Chocoh! initially.. I took a tour to the store .. loved their dark chocolate.. the one with almonds aswell .. then the fruit and nut & rum and raisin.. the Carousel chocolates make for an excellent gifting option and are economically priced .  </p>	
-					<h4>By:- Divyani Maheshwari,Mumbai</h4>
-				<br>
-				<br>
+					Im a big fan of local business or outlets that provide authentic and unique characteristic products which are specific to a region than the brands . Which got me interested in Chocoh! initially.. I took a tour to the store .. loved their dark chocolate.. the one with almonds aswell .. then the fruit and nut & rum and raisin.. the Carousel chocolates make for an excellent gifting option and are economically priced .  </p>
+					<p>By Divyani Maheshwari</p>
+					<a href="/home#Contactuspage">Drop your Review here and get featured!</a>
 				</div>
 			</div>
 			<br>
 			<br>
+		</div>
+	<
 </section>	
 
-<section id="Contactuspage" style="background-image: url({% static 'images/contact_us_bg.jpg' %});">
+<section id="Contactuspage" style="background-image: url({% static 'images/contact_us_bg.jpg' %});background-repeat: no-repeat; -webkit-background-size:cover;
+-moz-background-size:cover;-o-background-size:cover;background-size:cover;background-position:center; ">
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-12" id="product-heading">
@@ -191,50 +268,81 @@ This can be a holiday greeting if the boxes are corporate Christmas gifts or any
 <div class="container-fluid">
 <div class="row container-fluid">
 	<div class="col-md-4 text-center">
-		<a href="https://www.youtube.com/"><i class="fa fa-youtube-square" style="font-size:48px;color:white;padding-right: 10px;"></i></a>
-		<a href="https://www.facebook.com/"><i class="fa fa-facebook" style="font-size:48px;color:white;padding-right: 10px;"></i></a>
-		<a href="https://twitter.com/Twitter"><i class="fa fa-twitter" style="font-size:48px;color:white;padding-right: 10px;"></i></a>
-		<a href="https://plus.google.com/discover"><i class="fa fa-google-plus-official" style="font-size:48px;color:white;padding-right: 10px;"></i></a>
+		<a href="https://www.youtube.com/"><i class="fa fa-youtube-square" style="font-size:300%;color:white;padding-right: 10px;"></i></a>
+		<a href="https://www.facebook.com/ChocohJaipur/"><i class="fa fa-facebook" style="font-size:300%;color:white;padding-right: 10px;"></i></a>
+		<a href="https://twitter.com/Twitter"><i class="fa fa-twitter" style="font-size:300%;color:white;padding-right: 10px;"></i></a>
+		<a href="https://plus.google.com/discover"><i class="fa fa-google-plus-official" style="font-size:300%;color:white;padding-right: 10px;"></i></a>
 		<br>
-		<h4>Contact no.: 0876-9308-100</h4>
-		<h4>Email:- chocoh@gmail.com</h4>
+		<h4>Contact no.: 0964-9472-950</h4>
+		<h4>Email:- jaipurchocoh@gmail.com</h4>
+		<br>
+		<br>
 	</div>
-    <form class="col-md-8 text-center" method="POST" action="/contact_us_message">{% csrf_token %}
-      	<div class="row">
-          <label class="col-md-2" for="name"> Name : </label>
-          <input class="col-md-6 contact-us-form" id="name" name="name" type="text" size="50" placeholder="Enter Name" required >
-        </div>
-        <br>
-      	<div class="row">
-          <label class="col-md-2" for="name"> E-mail : </label>
-          <input class="col-md-6 contact-us-form" id="name" type="text"  name="email" size="50" placeholder="Enter E-mail id" required >
-        </div>
-        <br>
-      	<div class="row">
-          <label class="col-md-2" for="name"> Contact No. : </label>
-          <input class="col-md-6 contact-us-form" id="contact" name="contact" type="text" size="50" placeholder="Enter 10 digit contact number" pattern="[0-9]{10}">
-        </div>
-        <br>
-      	<div class="row">
-          <label class="col-md-2" for="name"> Message : </label>
-          <div class="col-md-6">
-			<textarea rows="5" cols="50" name="message" class="contact-us-form">
-			</textarea>	
-          </div>
-        </div>
-        <br>
-        <br>
-        <div class="col-md-8">
-        	<button type="submit" class="btn btn-success">Send Message</button>
-        </div>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-    </form>
-</div>
-    
+	<div class="container-fluid col-md-8">
+			<div class="formBox">
+				<form>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="inputBox ">
+									<div class="inputText">First Name</div>
+									<input type="text" name="name" id="name" class="input">
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<div class="inputBox">
+									<div class="inputText">Last Name</div>
+									<input type="text" name="last_name" id="last_name" class="input">
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-6">
+								<div class="inputBox">
+									<div class="inputText">Email</div>
+									<input type="text" name="email" id="em" class="input">
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<div class="inputBox">
+									<div class="inputText">Mobile</div>
+									<input type="text" name="contact" id="contact" class="input">
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-12">
+								<div class="inputBox">
+									<div class="inputText" id="message" name="message">Message</div>
+									<textarea class="input"></textarea>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-4 col-md-offset-4">
+								<button type="submit" name="" class="button" >Send Message <span class="glyphicon glyphicon-send" aria-hidden="true"></span></button>
+							</div>
+						</div>
+				</form>
+			</div>
+	</div>
+	<br>
+	<br>
+	<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+	 <script type="text/javascript">
+	 	$(".input").focus(function() {
+	 		$(this).parent().addClass("focus");
+	 	})
+	 </script>
+	 </div>
+<br>
+<br>
+<br>
+<br>
   </div>
 </section>	
 

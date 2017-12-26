@@ -1,3 +1,67 @@
+
+body{
+  background: #333;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.42857;
+  color: #fff;
+  background-color: #262626;
+}
+@media only screen and (min-width: 500px) and (max-width : 1024px) {
+    body {
+        font-size: 12px;
+    }
+    .laptop-devices{
+      display: none;
+    }
+    .mobile-devices{
+      display: none;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    body {
+        font-size: 14px;
+    }
+    .laptop-devices{
+      display: none;
+    }
+    .ipad-devices{
+      display: none;
+    }
+}
+@media only screen and (min-width : 1025px) {
+    body {
+        font-size: 16px;
+    }
+    .mobile-devices{
+      display: none;
+    }
+    .ipad-devices{
+      display: none;
+    }
+
+}
+
+
+h1{
+  color: white;
+  text-align: center;
+  margin-top: 1em;
+  margin-bottom: 2em;
+  text-shadow: 0px 2px 0px rgba(0, 0, 0, 1);
+  font-family: "Dancing Script", cursive;
+  font-weight: 300;
+  line-height: 3;
+  font-size: 200%;
+}
+h4{
+    font-family: "Dancing Script", cursive;
+    font-size: 150%;   
+}
+textarea{
+  height: 100px !important;
+}
 .navbar .navbar-nav .navbar-right{
     display: inline-block;
     float: none;
@@ -6,30 +70,12 @@
     text-align: center;
     font-family: Lato;
     font-weight: 700;
-    font-size: 14px;
+    font-size: 90%;
     position: relative;
-}
-body {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 15px;
-    line-height: 1.42857;
-    color: #fff;
-    background-color: #262626;
 }
 #slider{
 	height: 648px;
 	z-index: 4;
-}
-h1{
-    font-family: "Dancing Script", cursive;
-    font-weight: 300;
-    line-height: 3;
-    font-size: 35px;
-    color: inherit;
-}
-h4{
-    font-family: "Dancing Script", cursive;
-    font-size: 20px;   
 }
 .home-button-product{
 	text-align: center;
@@ -45,6 +91,12 @@ h4{
 	top:0;
 	left: 0;
 }
+
+#font-control
+{
+  color: blue;
+  font-size: 30px;
+}
 #slider-logo{
 	position: absolute;
 	top:10%;
@@ -52,7 +104,7 @@ h4{
     font-family: "Dancing Script";
     font-weight: 500;
     line-height: 3em;
-    font-size: 110px;
+    font-size: 650%;
     color: inherit;
 }
 .card {
@@ -73,7 +125,7 @@ h4{
 	font-family: "Dancing Script";
     font-weight: 500;
     line-height: 2;
-    font-size: 90px;
+    font-size: 550%;
 }
 .contact-us-form{
     background-color: transparent;
@@ -128,23 +180,9 @@ h4{
   }
 }
 
-// non-related styling:
-body{
-  background: #333;
-  color: #ddd;
-}
-h1{
-  color: white;
-  font-size: 2.25em;
-  text-align: center;
-  margin-top: 1em;
-  margin-bottom: 2em;
-  text-shadow: 0px 2px 0px rgba(0, 0, 0, 1);
-}
 #fixedbutton {
     position: fixed;
     bottom: 50px;
-    right: 50px; 
     z-index: 1;
 }
 
@@ -160,4 +198,63 @@ h1{
 .bigicon {
     font-size: 35px;
     color: #36A0FF;
+}
+
+
+.formBox{
+}
+.formBox  h1{
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  margin-bottom: 50px;
+  text-transform: uppercase;
+  font-size: 150%;
+}
+.inputBox{
+  position: relative;
+  box-sizing: border-box;
+  margin-bottom: 50px;
+}
+.inputBox .inputText{
+  position: absolute;
+    font-size: 100%;
+    line-height: 20px;
+    transition: .5s;
+    opacity: .5;
+}
+.inputBox .input{
+  position: relative;
+  width: 100%;
+  height: 50px;
+  background: transparent;
+  border: none;
+    outline: none;
+    font-size: 150%;
+    border-bottom: 1px solid rgba(0,0,0,.5);
+
+}
+.focus .inputText{
+  transform: translateY(-20px);
+  font-size: 80%;
+  opacity: 1;
+  color: #00bcd4;
+
+}
+
+.button{
+  width: 100%;
+    height: 50px;
+    border: none;
+    outline: none;
+    background: #03A9F4;
+    color: #fff;
+}
+.parallax { 
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  position:relative;
+  z-index:.5;
 }
